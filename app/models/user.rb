@@ -1,10 +1,12 @@
 class User < ApplicationRecord
+  self.inheritance_column= :type
+
+  require "securerandom"
   has_secure_password
-  # mount_uploader :avatar, AvatarUploader
   validates :email, presence: true, uniqueness: true
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  # validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :username, presence: true, uniqueness: true
-  validates :password,
+  validates :password, presence: true,
   length: { minimum: 6 },
   if: -> { new_record? || !password.nil? }
 end
