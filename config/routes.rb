@@ -5,10 +5,18 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   resources :users
-  resources :artists
-  resources :listeners
+  # resources :artists
+  resources :artists do
+    resources :songs
+    resources :albums
+  end
+  resources :listeners do
+    resources :playlists
+  end
   
   post '/auth/login', to: 'authentication#login'
+
+  post '/artists/songs', to: 'artists#add_song'
   # post '/auth/signup', to: 'authentication#signup'
   # get '/*a', to: 'application#not_found'
 

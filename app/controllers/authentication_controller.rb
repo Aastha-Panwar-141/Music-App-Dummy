@@ -4,19 +4,13 @@ class AuthenticationController < ApplicationController
   # POST /auth/login
   def login
     # byebug
-    @user = User.find_by_email(params[:email])
-    if @user&.authenticate(params[:password])  #user && user.authenticate
-      token = jwt_encode(user_id: @user.id)
-      # time = Time.now + 24.hours.to_i
+    user = User.find_by_email(params[:email])
+    if user && user.authenticate(params[:password])  #user&.authenticate
+      token = jwt_encode(user_id: user.id)
       render json: { token: token}, status: :ok
     else
-      render json: { error: 'unauthorized' }, status: :unauthorized
+      render json: { error: 'Invalid username or password' }, status: :unauthorized
     end
-  end
-
-  # POST /auth/signup
-  def signup
-    puts "Signup is Working!"
   end
 
   # private
