@@ -1,5 +1,5 @@
 class ArtistsController < ApplicationController
-  # skip_before_action :authenticate_request, only: [ :create]
+  skip_before_action :authenticate_request, only: [ :create]
   # before_action :authenticate_request, except: [:index, :create]
   before_action :set_artist, only: [:show, :destroy, :update]
   

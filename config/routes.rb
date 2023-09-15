@@ -16,7 +16,8 @@ Rails.application.routes.draw do
   
   post '/auth/login', to: 'authentication#login'
 
-  post '/artists/songs', to: 'artists#add_song'
+  # post '/artists/songs', to: 'artists#add_song'
+  
   # post '/auth/signup', to: 'authentication#signup'
   # get '/*a', to: 'application#not_found'
 
