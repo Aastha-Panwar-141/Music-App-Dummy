@@ -3,9 +3,9 @@ class ApplicationController < ActionController::API
   
   before_action :authenticate_request
   
-  def not_found
-    render json: { error: 'not_found' }
-  end
+  # def not_found
+  #   render json: { error: 'not_found' }
+  # end
   
   private
   #this function has responsibility for authorizing user requests
@@ -19,10 +19,15 @@ class ApplicationController < ActionController::API
       decoded = jwt_decode(header)
       # byebug
       @current_user = User.find(decoded[:user_id])
+
+      if @current_user.user_type == 'Artist'
+        @current_user = Artist.find(decoded[:user_id])
+      end
+      
     rescue JWT::DecodeError => e
       render json: { error: 'Invalid token' }
     rescue ActiveRecord::RecordNotFound
-      render json: "No record found.."
+      render json: "Not authorized..."
     end
   end
   

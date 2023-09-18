@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_15_065259) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_18_131246) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -41,12 +41,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_065259) do
 
   create_table "albums", force: :cascade do |t|
     t.string "title"
-    t.integer "artist_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "song_id"
-    t.index ["artist_id"], name: "index_albums_on_artist_id"
-    t.index ["song_id"], name: "index_albums_on_song_id"
+    t.index ["user_id"], name: "index_albums_on_user_id"
   end
 
   create_table "playlist_songs", force: :cascade do |t|
@@ -69,32 +67,32 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_15_065259) do
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.string "genre"
-    t.integer "artist_id", null: false
+    t.integer "user_id", null: false
+    t.integer "album_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "playlist_id"
-    t.integer "album_id"
-    t.integer "play_count"
     t.index ["album_id"], name: "index_songs_on_album_id"
-    t.index ["artist_id"], name: "index_songs_on_artist_id"
-    t.index ["playlist_id"], name: "index_songs_on_playlist_id"
+    t.index ["user_id"], name: "index_songs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
     t.string "username"
     t.string "email"
     t.string "password_digest"
+    t.string "user_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "type"
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.string "unconfirmed_email"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "albums", "artists"
+  add_foreign_key "albums", "users"
   add_foreign_key "playlist_songs", "playlists"
   add_foreign_key "playlist_songs", "songs"
   add_foreign_key "playlists", "listeners"
-  add_foreign_key "songs", "artists"
+  add_foreign_key "songs", "albums"
+  add_foreign_key "songs", "users"
 end
