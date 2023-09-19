@@ -35,22 +35,23 @@ class UsersController < ApplicationController
   end
   
   def create
-    user = User.new(user_params)
-    if user.save
-      render json: { data: user, message: 'User successfully created' }, status: :created
+    @user = User.new(user_params)
+    if @user.save
+      UserMailer.with(user: @user).welcome_email.deliver_now
+      render json: { data: @user, message: 'User successfully created' }, status: :created
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
   
-  def update
-    if current_user.update_new_email!(@new_email)
-      # SEND EMAIL HERE
-      render json: { status: 'Email Confirmation has been sent to your new Email.' }, status: :ok
-    else
-      render json: { errors: current_user.errors.values.flatten.compact }, status: :bad_request
-    end
-  end
+  # def update
+  #   if current_user.update_new_email!(@new_email)
+  #     # SEND EMAIL HERE
+  #     render json: { status: 'Email Confirmation has been sent to your new Email.' }, status: :ok
+  #   else
+  #     render json: { errors: current_user.errors.values.flatten.compact }, status: :bad_request
+  #   end
+  # end
   
   def update
     if @current_user.id == @user.id && @current_user.user_type == 'Artist'
@@ -105,7 +106,7 @@ class UsersController < ApplicationController
     end
 
     if User.email_used?(@new_email)
-      return render json: { error: 'Email is already in use.'] }, status: :unprocessable_entity
+      return render json: { error: 'Email is already in use.'}, status: :unprocessable_entity
     end
   end
 
