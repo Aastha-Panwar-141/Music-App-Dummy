@@ -1,40 +1,27 @@
 class SongsController < ApplicationController
-  before_action :find_song, only: [:update, :destroy]
+  before_action :find_song, only: [:update, :destroy, :show]
   
   # before_action :authenticate_request
   
-  # Add song action
   def create
     # byebug
     song = @current_user.songs.new(song_params)
     if song.save
-      render json: { message: 'Song added successfully' }, status: :created
+      song.file.attach(params[:file])
+      render json: { message: 'Song added successfully', song: song }, status: :created
     else
       render json: { error: song.errors.full_messages }, status: :unprocessable_entity
     end
   end
   
   def show
-    @song = Song.find(params[:id])
-    render json: {
-      user_id: @song.user_id,
-      title: @song.title,
-      genre: @song.genre,
-      album_id: @song.album_id
-    }
+    @song.increment!(:play_count)
+    render json: @song
   end
   
   def index
-    @songs = Song.all.map do |song|
-      {
-        id: song.id,
-        user_id: song.user_id,
-        title: song.title,
-        genre: song.genre,
-        album_id: song.album_id
-      }
-    end
-    render json: @songs
+    songs = Song.all
+    render json: songs
   end
   
   def update
@@ -81,7 +68,25 @@ class SongsController < ApplicationController
       render json: {error: "No product is available for this genre."}
     end
   end
+
+  def top_played_songs
+    # byebug
+    user_id = @current_user.id  
+    top_songs = Song.where(user_id: user_id).order(play_count: :desc).limit(10)
+    render json: top_songs
+  end
+
+  def top_10
+    top_songs = Song.order(play_count: :desc).limit(10)
+    render json: top_songs
+  end
   
+  def recommended_by_genre
+    genre = params[:genre]
+    recommended_tracks = Song.where(genre: genre).order(play_count: :desc).limit(10)
+    render json: recommended_tracks, status: :ok
+  end
+
   private
   
   def find_song

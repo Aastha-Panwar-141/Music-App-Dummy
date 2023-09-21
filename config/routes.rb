@@ -21,29 +21,28 @@ Rails.application.routes.draw do
   
   get '/users/artists', to: 'users#artists'
   get '/users/listeners', to: 'users#listeners'
-  
-  
+  get 'songs/top_played', to: 'songs#top_played_songs'
+  get 'songs/recommended_by_genre', to: 'songs#recommended_by_genre'
+  get 'songs/top_10', to: 'songs#top_10'
+
   resources :songs do 
     collection do
       get :search
       get :search_by_genre
     end
   end
+
   
   resources :albums
-  
+  resources :playlists
+
   resources :artists do
     get 'my_songs', on: :collection
     get 'my_albums', on: :collection
   end
   
   post '/users/login', to: 'users#login'
-  
-  get '/password/reset', to: 'password_resets#new'
-  # post '/password/reset', to: 'password_resets#create'
-  get '/password/reset/edit', to: 'password_resets#edit'
-  patch '/password/reset/edit', to: 'password_resets#update'
-  
+    
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
   put 'password/update', to: 'passwords#update'

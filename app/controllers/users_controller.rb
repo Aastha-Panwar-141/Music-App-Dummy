@@ -83,6 +83,23 @@ class UsersController < ApplicationController
       render json: { error: 'Invalid username or password' }, status: :unauthorized
     end
   end
+
+  def recommended_by_genre
+    genre = params[:genre]
+    recommended_tracks = Song.where(genre: genre)
+    render json: recommended_tracks, status: :ok
+  end
+
+  # def recommended_products 
+  #   if @user.present?
+  #     fav_brand = @user.favorite_brand
+  #     recommended_products = Product.where(brand_name: fav_brand)
+  #     render json: {recommended_products: recommended_products}
+  #   else
+  #     render json: {error: "No records."}, status: :bad_request
+  #   end
+  # end
+
   
   private
   

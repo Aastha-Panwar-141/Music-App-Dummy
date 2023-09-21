@@ -14,7 +14,7 @@ class ArtistsController < ApplicationController
       artist = @current_user
       albums = artist.albums
       render json: {
-        albums: albums
+        albums: albums,
       }
     end
 end

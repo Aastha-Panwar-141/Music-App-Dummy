@@ -8,14 +8,14 @@ class UserMailer < ApplicationMailer
     #     mail(to: @user.email, subject: 'Welcome to My Awesome Site')
     # end
     
-    # def welcome_email(user)
-    #     @user = user
-    #     mail(to: @user.email, subject: 'Welcome to My Awesome Site')
-    # end  
+    def token_email
+        @user=params[:user]
+        mail(to: @user.email, subject: "Token Email")
+    end
     
     def welcome_email
         @user=params[:user]
-        mail(to: @user.email, subject: "Token Email")
-      end
+        mail(to: @user.email, subject: "Welcome to Music App")
+    end
     
 end

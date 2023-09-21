@@ -16,6 +16,7 @@ gem "puma", "~> 5.0"
 gem 'jwt'
 
 gem "byebug"
+gem "active_model_serializers"
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
