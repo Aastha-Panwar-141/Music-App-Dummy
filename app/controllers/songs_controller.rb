@@ -27,7 +27,6 @@ class SongsController < ApplicationController
   end
   
   def update
-    song = Song.find(params[:id])
     if song_owner?(song)
       if song.update(song_params)
         render json: { message: 'Song updated successfully' }
@@ -50,32 +49,23 @@ class SongsController < ApplicationController
   end
   
   def search 
-    # byebug
-    title = params[:title]
-    if title.present?
-      songs = Song.where("title LIKE ?", "%#{title}%")
-      render json: {result: songs}
+    if params[:query].present?
+      query = params[:query]
+      songs = Song.where("title LIKE ? OR genre LIKE ?", "%#{query}%", "%#{query}%")
+      byebug
+      if songs.present?
+        render json: {result: songs}
+      else
+        render json: {result: "No song is available for '#{query}'"}
+      end
     else
-      render json: {error: "No record found for given title."}
+      render json: {error: "Please enter query to search!"}
     end
   end
   
-  def search_by_genre
-    # byebug
-    genre = params[:genre]
-    if genre.present?
-      songs = Song.where("genre LIKE ?", "%#{genre}%")
-      render json: {result: songs}
-    else
-      render json: {error: "No product is available for this genre."}
-    end
-  end
-
-  def top_played_songs
-    # byebug
-    user_id = @current_user.id  
-    top_songs = Song.where(user_id: user_id).order(play_count: :desc).limit(10)
-    render json: top_songs
+  def my_top_songs
+    songs = @current_user.songs.order(play_count: :desc).limit(3)
+    render json: songs, status: 200
   end
 
   def top_10
@@ -91,8 +81,8 @@ class SongsController < ApplicationController
 
   def recently_played_songs
     # byebug
-    recently_played_song = @current_user.recentyly_playeds
-    if recently_played_song
+    recently_played_songs = @current_user.recentyly_playeds
+    if recently_played_songs.present?
       render json: recently_played_song
     else
       render json: { message: "There is no recently played song" }, status: 400

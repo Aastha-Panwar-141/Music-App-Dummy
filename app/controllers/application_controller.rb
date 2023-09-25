@@ -28,7 +28,7 @@ class ApplicationController < ActionController::API
         @current_user = Listener.find(decoded[:user_id])
       end
       
-    rescue JWT::DecodeError => e
+    rescue JWT::DecodeError => e   # error related to token: missing, expired, invalid, etc.
       render json: { error: 'Invalid token' }
     rescue ActiveRecord::RecordNotFound
       render json: "Not authorized..."

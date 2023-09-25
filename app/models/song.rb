@@ -8,5 +8,4 @@ class Song < ApplicationRecord
 
   validates :title, presence: true
   validates :genre, presence: true
-  # paginates_per 5
 end

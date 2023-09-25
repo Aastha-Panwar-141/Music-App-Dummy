@@ -13,8 +13,8 @@ class UsersController < ApplicationController
   end
   
   def artists
-    artists = User.where(user_type: 'Artist')
-    if artists.size !=0
+    artists = Artist.all
+    if artists.present?
       render json: artists
     else
       render json: "No Artist available!"
@@ -22,8 +22,8 @@ class UsersController < ApplicationController
   end
   
   def listeners
-    listeners = User.where(user_type: 'Listener')
-    if listeners.size !=0
+    listeners = Listener.all
+    if listeners.present?
       render json: listeners
     else
       render json: "No Listener available!"
@@ -45,22 +45,20 @@ class UsersController < ApplicationController
   end
   
   def update
-    if @current_user.id == @user.id && @current_user.user_type == 'Artist'
-      if @current_user.update(user_params)
-        render json: { message: 'User updated', data: @current_user}
-      else
-        render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
-      end
+   # if @current_user.id == @user.id && @current_user.user_type == 'Artist'
+    if @current_user.update(user_params)
+      render json: { message: 'User updated', data: @current_user}
     else
-      render json: {error: 'You are not authorized!'}
+      render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
     end
   end
-  
+
   def destroy
-    if @current_user.destroy
-      render json: { data: @current_user, message: 'User deleted' }, status: :no_content
+    if @current_user
+      @current_user.destroy
+      render json: { message: "User Account Deleted" }, status: 202
     else
-      render json: { message: 'User deletion failed' }
+      render json:{ error: "can't find artist" }, status: 400
     end
   end
   
@@ -81,9 +79,9 @@ class UsersController < ApplicationController
     render json: recommended_tracks, status: :ok
   end
 
-  def owns?(playlist)
-    self.id == playlist.user_id
-  end
+  # def owns?(playlist)
+  #   self.id == playlist.user_id
+  # end
 
   
   private
@@ -92,13 +90,13 @@ class UsersController < ApplicationController
     params.permit(:username, :email, :password, :user_type)
   end
   
-  def find_user
-    begin
-      @user = User.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No record found for given id.'}
-    end
-  end
+  # def find_user
+  #   begin
+  #     @user = User.find(params[:id])
+  #   rescue ActiveRecord::RecordNotFound
+  #     render json: {error: 'No record found for given id.'}
+  #   end
+  # end
 
   def validate_email_update
     @new_email = params[:email].to_s.downcase
@@ -110,23 +108,17 @@ class UsersController < ApplicationController
     if  @new_email == @current_user.email
       return render json: { status: 'Current Email and New email cannot be the same' }, status: :bad_request
     end
-
-    if User.email_used?(@new_email)
-      return render json: { error: 'Email is already in use.'}, status: :unprocessable_entity
-    end
   end
 
-  def email_update
-    token = params[:token].to_s
-    user = User.find_by(confirmation_token: token)
+  # def email_update
+  #   token = params[:token].to_s
+  #   user = User.find_by(confirmation_token: token)
   
-    if !user || !user.confirmation_token_valid?
-      render json: {error: 'The email link seems to be invalid / expired. Try requesting for a new one.'}, status: :not_found
-    else
-      user.update_new_email!
-      render json: {status: 'Email updated successfully'}, status: :ok
-    end
-  end
-  
-
+  #   if !user || !user.confirmation_token_valid?
+  #     render json: {error: 'The email link seems to be invalid / expired. Try requesting for a new one.'}, status: :not_found
+  #   else
+  #     user.update_new_email!
+  #     render json: {status: 'Email updated successfully'}, status: :ok
+  #   end
+  # end
 end

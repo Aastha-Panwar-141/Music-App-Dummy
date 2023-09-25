@@ -26,17 +26,20 @@ Rails.application.routes.draw do
   get 'songs/top_10', to: 'songs#top_10'
   get 'recently_played_songs', to: 'songs#recently_played_songs'
   get 'songs/:id', to: 'songs#show'
+  get "artist/my_top_song", to: "songs#my_top_song"
+  get 'song/search', to: 'songs#search'
+  get 'song/search-by-genre', to: 'songs#search_by_genre'
 
 
-  resources :songs, param: :page, only: [:index] do 
-    collection do
-      get :search
-      get :search_by_genre
-    end
-  end
+  post '/users/login', to: 'users#login'
+  post 'password/forgot', to: 'passwords#forgot'
+  post 'password/reset', to: 'passwords#reset'
+  put 'password/update', to: 'passwords#update'
 
+
+  resources :songs, param: :page, only: [:index]
+  resources :songs
   resources :albums
-  # resources :recentyly_playeds, only: [:index]
   resources :playlists do
     member do
       post 'add_song'
@@ -47,17 +50,11 @@ Rails.application.routes.draw do
     end
   end
 
-
   resources :artists do
     get 'my_songs', on: :collection
     get 'my_albums', on: :collection
   end
   
-  post '/users/login', to: 'users#login'
-    
-  post 'password/forgot', to: 'passwords#forgot'
-  post 'password/reset', to: 'passwords#reset'
-  put 'password/update', to: 'passwords#update'
 
   
   # resources :artists

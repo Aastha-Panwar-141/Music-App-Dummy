@@ -5,15 +5,15 @@ class PlaylistsController < ApplicationController
 
   def create
     # byebug
-    # song_id = params[:song_id]
-    # unless song_id.present?
-    #   return render json: { error: 'Song ID is required to create a playlist' }, status: :unprocessable_entity
-    # end
-
+    song_id = params[:song_id]
+    unless song_id.present?
+      return render json: { error: 'Song ID is required to create a playlist' }, status: :unprocessable_entity
+    end
+# byebug
     @playlist = @current_user.playlists.new(playlist_params)
     if @playlist.save
-      # song = Song.find(song_id)
-      # @playlist.songs << song
+      song = Song.find(song_id)
+      @playlist.songs << song
       
       render json: { message: 'Playlist created successfully' }, status: :created
     else
@@ -89,6 +89,7 @@ class PlaylistsController < ApplicationController
 
   private
 
+  #filter to find playlist by it's ID
   def set_playlist
     begin
       @playlist = Playlist.find(params[:id])
@@ -97,22 +98,26 @@ class PlaylistsController < ApplicationController
     end
   end
   
+
   def playlist_params
-    params.permit(:title, song_attributes:[
-      :title, :genre, :album_id, :file
-    ])
+    params.permit(:title)
+    # params.permit(:title, songs:[
+    #   :title, :genre, :album_id, :file
+    # ])
   end
 
   def playlist_owner?
     @playlist.user_id == @current_user.id
   end
 
+  # check user-type = Listener
   def validate_listener
     if @current_user.user_type != 'Listener'
       render json: { error: 'You are Not Allowed for this request' }, status: :forbidden
     end
   end 
   
+  # filter to find song by ID
   def find_song
     @song = Song.find(params[:song_id])
   end
