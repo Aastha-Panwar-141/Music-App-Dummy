@@ -8,7 +8,9 @@ class User < ApplicationRecord
   validates :password, presence: true, on: :create,
   length: { minimum: 6 }
   validates :user_type, presence: true, inclusion: { in: ['Listener', 'Artist'] }
-    
+  has_many :playlists, dependent: :destroy
+  has_many :recentyly_playeds
+
   def generate_password_token!
     self.reset_password_token = generate_token
     self.reset_password_sent_at = Time.now.utc

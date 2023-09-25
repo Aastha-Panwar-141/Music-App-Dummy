@@ -14,6 +14,8 @@ gem "puma", "~> 5.0"
 
 # Use Json Web Token (JWT) for token based authentication
 gem 'jwt'
+gem 'kaminari'
+gem 'will_paginate', '~> 3.1.0'
 
 gem "byebug"
 gem "active_model_serializers"

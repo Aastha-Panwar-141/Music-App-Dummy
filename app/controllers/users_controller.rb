@@ -44,19 +44,10 @@ class UsersController < ApplicationController
     end
   end
   
-  # def update
-  #   if current_user.update_new_email!(@new_email)
-  #     # SEND EMAIL HERE
-  #     render json: { status: 'Email Confirmation has been sent to your new Email.' }, status: :ok
-  #   else
-  #     render json: { errors: current_user.errors.values.flatten.compact }, status: :bad_request
-  #   end
-  # end
-  
   def update
     if @current_user.id == @user.id && @current_user.user_type == 'Artist'
       if @current_user.update(user_params)
-        render json: { data: @current_user, message: 'User updated' }
+        render json: { message: 'User updated', data: @current_user}
       else
         render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
       end
@@ -90,15 +81,9 @@ class UsersController < ApplicationController
     render json: recommended_tracks, status: :ok
   end
 
-  # def recommended_products 
-  #   if @user.present?
-  #     fav_brand = @user.favorite_brand
-  #     recommended_products = Product.where(brand_name: fav_brand)
-  #     render json: {recommended_products: recommended_products}
-  #   else
-  #     render json: {error: "No records."}, status: :bad_request
-  #   end
-  # end
+  def owns?(playlist)
+    self.id == playlist.user_id
+  end
 
   
   private
@@ -108,7 +93,11 @@ class UsersController < ApplicationController
   end
   
   def find_user
-    @user = User.find(params[:id])
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: 'No record found for given id.'}
+    end
   end
 
   def validate_email_update
@@ -118,7 +107,7 @@ class UsersController < ApplicationController
       return render json: { status: 'Email cannot be blank' }, status: :bad_request
     end
 
-    if  @new_email == current_user.email
+    if  @new_email == @current_user.email
       return render json: { status: 'Current Email and New email cannot be the same' }, status: :bad_request
     end
 

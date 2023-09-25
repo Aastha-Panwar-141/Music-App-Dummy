@@ -24,17 +24,29 @@ Rails.application.routes.draw do
   get 'songs/top_played', to: 'songs#top_played_songs'
   get 'songs/recommended_by_genre', to: 'songs#recommended_by_genre'
   get 'songs/top_10', to: 'songs#top_10'
+  get 'recently_played_songs', to: 'songs#recently_played_songs'
+  get 'songs/:id', to: 'songs#show'
 
-  resources :songs do 
+
+  resources :songs, param: :page, only: [:index] do 
     collection do
       get :search
       get :search_by_genre
     end
   end
 
-  
   resources :albums
-  resources :playlists
+  # resources :recentyly_playeds, only: [:index]
+  resources :playlists do
+    member do
+      post 'add_song'
+      post 'merge_playlists'
+    end
+    collection do
+      post 'merge_playlists'
+    end
+  end
+
 
   resources :artists do
     get 'my_songs', on: :collection

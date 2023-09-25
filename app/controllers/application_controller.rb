@@ -23,6 +23,10 @@ class ApplicationController < ActionController::API
       if @current_user.user_type == 'Artist'
         @current_user = Artist.find(decoded[:user_id])
       end
+
+      if @current_user.user_type == 'Listener'
+        @current_user = Listener.find(decoded[:user_id])
+      end
       
     rescue JWT::DecodeError => e
       render json: { error: 'Invalid token' }

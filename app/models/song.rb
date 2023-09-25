@@ -4,7 +4,9 @@ class Song < ApplicationRecord
   belongs_to :album
   has_many :playlist_songs, dependent: :destroy
   has_many :playlists, through: :playlist_songs
+  has_many :recentyly_playeds
 
   validates :title, presence: true
   validates :genre, presence: true
+  # paginates_per 5
 end

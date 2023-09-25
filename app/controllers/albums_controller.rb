@@ -44,7 +44,11 @@ class AlbumsController < ApplicationController
   end
   
   def find_album
-    @album = Album.find(params[:id])
+    begin
+      @album = Album.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: 'No record found for given id.'}
+    end
   end
   
   def album_owner?

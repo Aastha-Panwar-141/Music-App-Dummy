@@ -1,6 +1,7 @@
 class SongsController < ApplicationController
   before_action :find_song, only: [:update, :destroy, :show]
-  
+  before_action :validate_artist, only: [:create]
+  before_action :validate_listener, only: [:recently_played_songs]
   # before_action :authenticate_request
   
   def create
@@ -16,11 +17,12 @@ class SongsController < ApplicationController
   
   def show
     @song.increment!(:play_count)
+    @current_user.recentyly_playeds.create(song_id: @song.id)
     render json: @song
   end
   
   def index
-    songs = Song.all
+    songs = Song.paginate(page: params[:page], per_page: 5)
     render json: songs
   end
   
@@ -87,10 +89,24 @@ class SongsController < ApplicationController
     render json: recommended_tracks, status: :ok
   end
 
+  def recently_played_songs
+    # byebug
+    recently_played_song = @current_user.recentyly_playeds
+    if recently_played_song
+      render json: recently_played_song
+    else
+      render json: { message: "There is no recently played song" }, status: 400
+    end
+  end
+
   private
   
   def find_song
-    @song = Song.find(params[:id])
+    begin
+      @song = Song.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: 'No record found for given id.'}
+    end
   end
   
   def song_owner?(song)
@@ -100,5 +116,17 @@ class SongsController < ApplicationController
   def song_params
     params.permit(:title, :genre, :album_id, :file)
   end
+
+  def validate_artist
+    if @current_user.user_type != 'Artist'
+      render json: { error: 'Listener are Not Allowed for this request' }, status: :forbidden
+    end
+  end 
+
+  def validate_listener
+    if @current_user.user_type != 'Listener'
+      render json: { error: 'Artist are Not Allowed for this request' }, status: :forbidden
+    end
+  end 
   
 end
