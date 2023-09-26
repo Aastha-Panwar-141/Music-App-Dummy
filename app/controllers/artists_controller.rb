@@ -1,20 +1,11 @@
 class ArtistsController < ApplicationController
-
   # view an artist's own songs
   def my_songs
-      artist = @current_user
-      songs = artist.songs
-      render json: {
-        songs: songs
-      }
-    end
+    render json: { songs: @current_user&.songs }  # &.- self navigator
+  end
   
     # view an artist's own albums
-    def my_albums
-      artist = @current_user
-      albums = artist.albums
-      render json: {
-        albums: albums,
-      }
-    end
+  def my_albums
+    render json: { albums: @current_user&.albums }
+  end
 end

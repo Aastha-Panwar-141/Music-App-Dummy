@@ -9,7 +9,6 @@ class PlaylistsController < ApplicationController
     unless song_id.present?
       return render json: { error: 'Song ID is required to create a playlist' }, status: :unprocessable_entity
     end
-# byebug
     @playlist = @current_user.playlists.new(playlist_params)
     if @playlist.save
       song = Song.find(song_id)

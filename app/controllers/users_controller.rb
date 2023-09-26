@@ -2,9 +2,8 @@ class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [:create, :login]
   # before_action :set_user, only: [:show, :destroy, :update]
   
-  # before_action :authorize_request, except: :create
-  before_action :find_user, only: %i[update destroy]
-  before_action :validate_email_update, only: :update
+  before_action :find_user, only: %i[update destroy recommended_genre]
+  # before_action :validate_email_update, only: :update
 
   
   # GET /users
@@ -43,15 +42,30 @@ class UsersController < ApplicationController
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
-  
+
   def update
-   # if @current_user.id == @user.id && @current_user.user_type == 'Artist'
+    
+    if email_changed? && !@new_email.blank? && @new_email != @current_user.email
+     # byebug
+      return render json: { status: 'Email cannot be changed to an existing email' }, status: :bad_request
+    end
     if @current_user.update(user_params)
+    # if @current_user.update(user_params.except(:email))
+
       render json: { message: 'User updated', data: @current_user}
     else
       render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
     end
   end
+  
+  # def update
+  #  # if @current_user.id == @user.id && @current_user.user_type == 'Artist'
+  #   if @current_user.update(user_params)
+  #     render json: { message: 'User updated', data: @current_user}
+  #   else
+  #     render json: { errors: @current_user.errors.full_messages }, status: :unprocessable_entity
+  #   end
+  # end
 
   def destroy
     if @current_user
@@ -73,30 +87,33 @@ class UsersController < ApplicationController
     end
   end
 
-  def recommended_by_genre
-    genre = params[:genre]
-    recommended_tracks = Song.where(genre: genre)
-    render json: recommended_tracks, status: :ok
+  def recommended_genre 
+    if @user.present?
+      fav_genre = @user.fav_genre
+      recommended_by_genre = Song.where(genre: fav_genre)
+      render json: {recommended_songs: recommended_by_genre}
+    else
+      render json: {error: "No records."}, status: :bad_request
+    end
   end
 
-  # def owns?(playlist)
-  #   self.id == playlist.user_id
-  # end
-
-  
   private
   
   def user_params
-    params.permit(:username, :email, :password, :user_type)
+    params.permit(:username, :email, :password, :user_type, :fav_genre)
   end
   
-  # def find_user
-  #   begin
-  #     @user = User.find(params[:id])
-  #   rescue ActiveRecord::RecordNotFound
-  #     render json: {error: 'No record found for given id.'}
-  #   end
-  # end
+  def find_user
+    begin
+      @user = User.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: 'No record found for given id.'}
+    end
+  end
+
+  def email_changed?
+    params[:email] && params[:email].to_s.downcase != @current_user.email
+  end
 
   def validate_email_update
     @new_email = params[:email].to_s.downcase
@@ -110,15 +127,4 @@ class UsersController < ApplicationController
     end
   end
 
-  # def email_update
-  #   token = params[:token].to_s
-  #   user = User.find_by(confirmation_token: token)
-  
-  #   if !user || !user.confirmation_token_valid?
-  #     render json: {error: 'The email link seems to be invalid / expired. Try requesting for a new one.'}, status: :not_found
-  #   else
-  #     user.update_new_email!
-  #     render json: {status: 'Email updated successfully'}, status: :ok
-  #   end
-  # end
 end

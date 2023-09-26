@@ -22,10 +22,11 @@ Rails.application.routes.draw do
   get '/users/artists', to: 'users#artists'
   get '/users/listeners', to: 'users#listeners'
   get 'songs/top_played', to: 'songs#top_played_songs'
-  get 'songs/recommended_by_genre', to: 'songs#recommended_by_genre'
+  # get 'songs/recommended_by_genre', to: 'songs#recommended_by_genre'
+  get 'user/:id/recommended_genre', to: 'users#recommended_genre'
   get 'songs/top_10', to: 'songs#top_10'
   get 'recently_played_songs', to: 'songs#recently_played_songs'
-  get 'songs/:id', to: 'songs#show'
+  # get 'songs/:id', to: 'songs#show'
   get "artist/my_top_song", to: "songs#my_top_song"
   get 'song/search', to: 'songs#search'
   get 'song/search-by-genre', to: 'songs#search_by_genre'

@@ -72,18 +72,12 @@ class SongsController < ApplicationController
     top_songs = Song.order(play_count: :desc).limit(10)
     render json: top_songs
   end
-  
-  def recommended_by_genre
-    genre = params[:genre]
-    recommended_tracks = Song.where(genre: genre).order(play_count: :desc).limit(10)
-    render json: recommended_tracks, status: :ok
-  end
 
   def recently_played_songs
     # byebug
     recently_played_songs = @current_user.recentyly_playeds
     if recently_played_songs.present?
-      render json: recently_played_song
+      render json: recently_played_songs
     else
       render json: { message: "There is no recently played song" }, status: 400
     end

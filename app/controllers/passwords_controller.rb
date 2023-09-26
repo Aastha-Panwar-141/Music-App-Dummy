@@ -2,9 +2,7 @@ class PasswordsController < ApplicationController
   skip_before_action :authenticate_request
   
   def forgot
-    if params[:email].blank?
-      return render json: {error: "Email not present"}
-    end
+    return render json: {error: "Email not present"} unless params[:email].present?
     
     user = User.find_by(email: params[:email])
     
