@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [:create, :login]
   # before_action :set_user, only: [:show, :destroy, :update]
   
-  before_action :find_user, only: %i[update destroy recommended_genre]
+  before_action :find_user, only: %i[update destroy recommended_genre follow unfollow]
   # before_action :validate_email_update, only: :update
 
   
@@ -97,6 +97,41 @@ class UsersController < ApplicationController
     end
   end
 
+  def follow
+    # byebug
+    if @current_user.user_type == 'Listener' && @user.user_type == 'Listener'
+      return render json: { error: 'Listeners cannot follow other listeners' }, status: :unprocessable_entity
+    else
+      @current_user.followees << @user
+      render json: @user
+    end
+  end
+
+  def unfollow
+    if @current_user.followed_users.find_by(followee_id: @user.id).destroy
+      render json: @user
+    else
+      render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def all_followers
+    if @current_user.followers.present?
+      @followers = @current_user.followers
+      render json: @followers
+    else
+      render json: {error: "You have no followers!"}
+    end
+  end
+  
+  def all_followees
+    if @current_user.followees.present?
+      @followees = @current_user.followees
+      render json: @followees
+    else
+      render json: {error: "You have no followees!"}
+    end
+  end
   private
   
   def user_params

@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   self.inheritance_column= :user_type
-
+  
   require "securerandom" #an interface to secure random number generators
   has_secure_password #used to encrypt and authenticate passwords using BCrypt . It assumes the model has a column named password_digest
   validates :email, presence: true, uniqueness: true, format: {with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i, message: "Email address not valid"}
@@ -10,7 +10,12 @@ class User < ApplicationRecord
   validates :user_type, presence: true, inclusion: { in: ['Listener', 'Artist'] }
   has_many :playlists, dependent: :destroy
   has_many :recentyly_playeds
-
+  
+  has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
+  has_many :followees, through: :followed_users
+  has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
+  has_many :followers, through: :following_users
+  
   def generate_password_token!
     # byebug
     self.reset_password_token = generate_token
@@ -36,4 +41,3 @@ class User < ApplicationRecord
   end
   
 end
-  

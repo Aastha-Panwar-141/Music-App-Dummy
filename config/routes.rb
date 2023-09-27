@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :follows
   get 'password_resets/new'
   get 'password_resets/create'
   get 'password_resets/edit'
@@ -30,6 +31,12 @@ Rails.application.routes.draw do
   get "artist/my_top_song", to: "songs#my_top_song"
   get 'song/search', to: 'songs#search'
   get 'song/search-by-genre', to: 'songs#search_by_genre'
+
+  
+  post '/users/:id/follow', to: "users#follow"
+  post '/users/:id/unfollow', to: "users#unfollow"
+  get '/user/all_followers', to: "users#all_followers"
+  get '/user/all_followees', to: "users#all_followees"
 
 
   post '/users/login', to: 'users#login'
