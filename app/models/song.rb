@@ -8,4 +8,10 @@ class Song < ApplicationRecord
 
   validates :title, presence: true
   validates :genre, presence: true
+
+  validates :status, inclusion: { in: %w(public private) }, presence: true
+
+
+
+  # enum :privacy_status, { public:0, private:1 }
 end

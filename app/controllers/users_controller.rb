@@ -101,6 +101,10 @@ class UsersController < ApplicationController
     # byebug
     if @current_user.user_type == 'Listener' && @user.user_type == 'Listener'
       return render json: { error: 'Listeners cannot follow other listeners' }, status: :unprocessable_entity
+    elsif @current_user.id == @user.id
+      return render json: {error: "You can't follow yourself!"}, status: :unprocessable_entity
+    elsif @current_user.user_type == 'Artist' && @user.user_type == 'Listener'
+      return render json: {error: "Artist can't follow a listener!"}, status: :unprocessable_entity
     else
       @current_user.followees << @user
       render json: @user
@@ -142,7 +146,7 @@ class UsersController < ApplicationController
     begin
       @user = User.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No record found for given id.'}
+      render json: {error: 'No record found for given id.'}, status: :bad_request
     end
   end
 

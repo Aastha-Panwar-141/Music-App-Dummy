@@ -12,7 +12,11 @@ class PlaylistsController < ApplicationController
     @playlist = @current_user.playlists.new(playlist_params)
     if @playlist.save
       song = Song.find(song_id)
-      @playlist.songs << song
+      if song.present?
+        @playlist.songs << song
+      else
+        render json: {error: "No song is available for give id!"}, status: :unprocessable_entity
+      end
       
       render json: { message: 'Playlist created successfully' }, status: :created
     else
@@ -51,6 +55,7 @@ class PlaylistsController < ApplicationController
   end
 
   def add_song
+    # byebug
     if playlist_owner?
       if @playlist.songs.include?(@song)
         render json: { error: 'Song is already in the playlist' }, status: :unprocessable_entity
@@ -118,7 +123,13 @@ class PlaylistsController < ApplicationController
   
   # filter to find song by ID
   def find_song
-    @song = Song.find(params[:song_id])
+    # @song = Song.find(params[:song_id])
+    begin
+      @song = Song.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: 'No record found for given id.'}
+    end
+
   end
 
 end

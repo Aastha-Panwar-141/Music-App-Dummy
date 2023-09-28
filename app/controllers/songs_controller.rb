@@ -22,8 +22,32 @@ class SongsController < ApplicationController
   end
   
   def index
-    songs = Song.paginate(page: params[:page], per_page: 5)
+    songs = songs_per_page
     render json: songs
+  end
+
+  # def index
+  #   # byebug
+  #   songs = song_per_page
+  #   if songs.present?
+  #     artist = @current_user
+  #     if artist.present?
+  #       if artist.followers.include?(@current_user) || songs.where(status: 'public')
+  #         list = songs.where(artist: artist)
+  #         render json: list
+  #       else
+  #         render json: {error: "You are not authorize for private songs!"}
+  #       end
+  #     else
+  #       render json: {error: "No artist found!"}
+  #     end
+  #   else
+  #     render json: {error: "No songs is available!"}, status: :unprocessable_entity
+  #   end
+  # end
+
+  def songs_per_page
+    Song.paginate(page: params[:page], per_page: 5)
   end
   
   def update
@@ -39,9 +63,8 @@ class SongsController < ApplicationController
   end
   
   def destroy
-    song = Song.find(params[:id])
-    if song_owner?(song)
-      song.destroy
+    if song_owner?(@song)
+      @song.destroy
       render json: { message: 'Song deleted successfully' }
     else
       render json: { error: 'You are not authorized to delete this song' }, status: :unauthorized
@@ -49,10 +72,11 @@ class SongsController < ApplicationController
   end
   
   def search 
+    # byebug
     if params[:query].present?
       query = params[:query]
       songs = Song.where("title LIKE ? OR genre LIKE ?", "%#{query}%", "%#{query}%")
-      byebug
+      # byebug
       if songs.present?
         render json: {result: songs}
       else
@@ -65,7 +89,11 @@ class SongsController < ApplicationController
   
   def my_top_songs
     songs = @current_user.songs.order(play_count: :desc).limit(3)
-    render json: songs, status: 200
+    if songs.present?
+      render json: songs, status: 200
+    else
+      render json: {error: "No songs in top played list!"}, status: :unprocessable_entity
+    end
   end
 
   def top_10
@@ -98,7 +126,7 @@ class SongsController < ApplicationController
   end
   
   def song_params
-    params.permit(:title, :genre, :album_id, :file)
+    params.permit(:title, :genre, :album_id, :status, :file)
   end
 
   def validate_artist
