@@ -12,17 +12,11 @@ Rails.application.routes.draw do
       get 'artists'
       get 'listeners'
     end
-
-    post 'follow', on: :member
-    post 'unfollow', on: :member
-    get 'all_followers', on: :member
-    get 'all_followees', on: :member
     post 'login', on: :collection
     get 'recommended_genre', on: :member
-    # get 'my_top_song', on: :collection
   end
   
-  resources :artists, only: [] do
+  resources :artists do
     get 'my_songs', on: :collection
     get 'my_albums', on: :collection
   end
@@ -38,7 +32,6 @@ Rails.application.routes.draw do
     end
   end
 
-
   resources :playlists do
     member do
       post 'add_song'
@@ -46,6 +39,17 @@ Rails.application.routes.draw do
     end
     collection do
       post 'merge_playlists'
+    end
+  end
+
+  resources :follows, only: [] do 
+    member do 
+      post 'follow'
+      post 'unfollow'
+    end
+    collection do
+      get 'all_followers'
+      get 'all_followees'
     end
   end
 

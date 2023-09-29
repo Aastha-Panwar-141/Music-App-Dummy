@@ -3,6 +3,15 @@ class PlaylistsController < ApplicationController
   before_action :find_song, only: [:add_song]
   before_action :validate_listener, only: [:create, :add_song]
 
+  def index
+    playlists = Playlist.all
+    render json: playlists
+  end
+  
+  def show
+    render json: @playlist
+  end
+
   def create
     # byebug
     song_id = params[:song_id]
@@ -24,15 +33,6 @@ class PlaylistsController < ApplicationController
     end
   end
 
-  def index
-    playlists = Playlist.all
-    render json: playlists
-  end
-  
-  def show
-    render json: @playlist
-  end
-  
   def update
     if playlist_owner?
       if @playlist.update(playlist_params)
@@ -102,16 +102,26 @@ class PlaylistsController < ApplicationController
     end
   end
   
+  # filter to find song by ID
+  def find_song
+    # @song = Song.find(params[:song_id])
+    begin
+      byebug
+      @song = Song.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render json: {error: 'No record found for given id.'}
+    end
+  end
+  
+  def playlist_owner?
+    @playlist.user_id == @current_user.id
+  end
 
   def playlist_params
     params.permit(:title)
     # params.permit(:title, songs:[
     #   :title, :genre, :album_id, :file
     # ])
-  end
-
-  def playlist_owner?
-    @playlist.user_id == @current_user.id
   end
 
   # check user-type = Listener
@@ -121,15 +131,4 @@ class PlaylistsController < ApplicationController
     end
   end 
   
-  # filter to find song by ID
-  def find_song
-    # @song = Song.find(params[:song_id])
-    begin
-      @song = Song.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No record found for given id.'}
-    end
-
-  end
-
 end

@@ -11,7 +11,5 @@ class Song < ApplicationRecord
 
   validates :status, inclusion: { in: %w(public private) }, presence: true
 
-
-
   # enum :privacy_status, { public:0, private:1 }
 end
