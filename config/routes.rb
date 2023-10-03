@@ -53,6 +53,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :share_requests do 
+    member do
+      post 'accept'
+      post 'reject' 
+    end
+  end
+
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
   put 'password/update', to: 'passwords#update'

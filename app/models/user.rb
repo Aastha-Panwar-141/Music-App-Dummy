@@ -10,6 +10,10 @@ class User < ApplicationRecord
   validates :user_type, presence: true, inclusion: { in: ['Listener', 'Artist'] }
   has_many :playlists, dependent: :destroy
   has_many :recentyly_playeds
+  has_many :share_requests, dependent: :destroy
+  has_many :receiving_artist, foreign_key: :receiver_id, class_name: 'ShareRequest'
+  has_many :requesting_artist, foreign_key: :requester_id, class_name: 'ShareRequest'
+
   
   has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
   # a user has many followees through the followed_users

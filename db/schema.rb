@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_28_103028) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_03_071747) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -82,6 +82,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_103028) do
     t.index ["user_id"], name: "index_recentyly_playeds_on_user_id"
   end
 
+  create_table "share_requests", force: :cascade do |t|
+    t.integer "requester_id"
+    t.integer "receiver_id"
+    t.integer "requested_percent"
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.string "genre"
@@ -106,6 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_103028) do
     t.datetime "reset_password_sent_at"
     t.string "unconfirmed_email"
     t.string "fav_genre"
+    t.integer "total_share_percentage", default: 100
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

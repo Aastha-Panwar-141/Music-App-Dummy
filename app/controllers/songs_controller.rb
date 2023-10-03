@@ -61,7 +61,7 @@ class SongsController < ApplicationController
       render json: { error: song.errors.full_messages }, status: :unprocessable_entity
     end
   end
-  
+
   def update
     if @song.update(song_params)
       render json: { message: 'Song updated successfully' }
