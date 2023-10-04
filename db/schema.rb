@@ -87,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_071747) do
     t.integer "receiver_id"
     t.integer "requested_percent"
     t.string "status", default: "pending"
+    t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

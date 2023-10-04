@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     get 'my_albums', on: :collection
   end
 
+  resources :albums
+
   resources :songs, param: :page, only: [:index]
 
   resources :songs, except: [:index] do
@@ -57,6 +59,9 @@ Rails.application.routes.draw do
     member do
       post 'accept'
       post 'reject' 
+    end
+    collection do
+      get 'my_requests'
     end
   end
 

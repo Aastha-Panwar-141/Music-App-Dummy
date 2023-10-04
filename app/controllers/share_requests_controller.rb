@@ -1,68 +1,105 @@
 class ShareRequestsController < ApplicationController
   before_action :validate_artist
-  before_action :find_request, only: [:accept, :reject]
+  before_action :find_request, only: [:accept, :reject, :destroy]
   before_action :check_owner, only: [:accept, :reject]
-  
-  
+  before_action :check_status, only: [:accept, :reject]
+  before_action :find_receiver_artist, only: [:create]
   
   def index
     share_requests = ShareRequest.all 
-    render json: share_requests
-  end
-  
-  def create
-    # byebug
-    share_request = ShareRequest.new(
-      requesting_artist: @current_user,
-      receiving_artist: User.find(params[:receiver_id]),
-      requested_percent: params[:requested_percent],
-      status: 'pending'
-    )
-    if share_request.save
-      render json: "Request sent successfully!", status: :created
+    if share_requests.present?
+      render json: share_requests
     else
-      render json: {error: share_request.errors.full_messages}, status: :unprocessable_entity
+      render json: {error: "There is no share request!"}, status: :unprocessable_entity
     end
   end
   
-  # def accept
-  #   byebug
-  #   if @share_request.status == 'pending'
-  #     receiving_artist = @share_request.receiving_artist
-  #     receiving_artist.update(requested_percent: @share_request.requested_percent)
-  #     @share_request.update(status: 'accepted')
-  #     render json: { message: 'Share request accepted' }
-  #   else
-  #     render json: { error: 'Share request has already been processed' }, status: :unprocessable_entity
-  #   end
-  # end
-  
-  
-  
-  def reject
+  def create
+    share_request = ShareRequest.new(
+      requesting_artist: @current_user,
+      receiving_artist: @receiving_artist,
+      requested_percent: params[:requested_percent],
+      price: params[:price],
+      status: 'pending'
+    )
+    unless share_request.receiving_artist == @current_user
+      if share_request.save
+        render json: {result: "Deal Request sent successfully!", created_request: share_request}, status: :created
+      else
+        render json: {error: share_request.errors.full_messages}, status: :unprocessable_entity
+      end
+    else
+      render json: {error: "You can't request to yourself!"}, status: :unprocessable_entity
+    end
   end
   
+  def accept
+      requesting_artist = @share_request.requesting_artist
+      receiving_artist = @share_request.receiving_artist
+      requested_percentage = @share_request.requested_percent
+      requesting_artist.total_share_percentage += requested_percentage
+      receiving_artist.total_share_percentage -= requested_percentage
+      if requesting_artist.save && receiving_artist.save
+        @share_request.update(status: 'accepted')
+        render json: { message: 'Request accepted.' }
+      else
+        render json: { error: 'Failed to accept share request!' }, status: :unprocessable_entity
+      end
+  end
+  
+  def reject
+      @share_request.status = 'rejected'
+      if @share_request.save
+        render json: { message: 'Request rejected' }
+      else
+        render json: { error: 'Failed to reject share request!' }, status: :unprocessable_entity
+      end
+  end
+  
+  def destroy
+    if @share_request.destroy
+      render json: "Request deleted successfully!"
+    else
+      render json: "Failed to delete!"
+    end
+  end
   
   private
   
   def find_request
-    # byebug
     begin
       @share_request = ShareRequest.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render json: {result: "No record found for given id."} 
+      render json: {result: "No share request found for given id."}, status: :unprocessable_entity 
     end
   end
   
-  def check_owner
+  def find_receiver_artist
     begin
-      @share_request.receiver_id == @current_user.id
+      @receiving_artist = User.find(params[:receiver_id])
     rescue ActiveRecord::RecordNotFound
-      render json: {result: "No record found for given id."} 
+      render json: {result: "No receiving artist found for given id."}, status: :unprocessable_entity 
+    end
+  end 
+  
+  def request_owner?(share_request)
+    @share_request.receiver_id == @current_user.id
+  end
+  
+  def check_owner
+    unless request_owner?(@share_request)
+      render json: {error: "You are not authorized for this request!"}, status: :unprocessable_entity
     end
   end
+
+  def check_status
+    unless @share_request.status == 'pending'
+      render json: "Request is not pending"
+    end
+  end
+  
   def share_params
-    params.permit(:receiver_id, :requested_percent)
+    params.permit(:receiver_id, :requested_percent, :price)
   end
   
   def validate_artist

@@ -10,7 +10,7 @@ class User < ApplicationRecord
   validates :user_type, presence: true, inclusion: { in: ['Listener', 'Artist'] }
   has_many :playlists, dependent: :destroy
   has_many :recentyly_playeds
-  has_many :share_requests, dependent: :destroy
+  # has_many :share_requests, dependent: :destroy
   has_many :receiving_artist, foreign_key: :receiver_id, class_name: 'ShareRequest'
   has_many :requesting_artist, foreign_key: :requester_id, class_name: 'ShareRequest'
 
@@ -22,7 +22,6 @@ class User < ApplicationRecord
   has_many :followers, through: :following_users
   
   def generate_password_token!
-    # byebug
     self.reset_password_token = generate_token
     self.reset_password_sent_at = Time.now.utc
     save!
@@ -33,7 +32,6 @@ class User < ApplicationRecord
   end
   
   def reset_password!(password)
-    # byebug
     self.reset_password_token = nil
     self.password = password
     save!

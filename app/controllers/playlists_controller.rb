@@ -5,7 +5,11 @@ class PlaylistsController < ApplicationController
 
   def index
     playlists = Playlist.all
-    render json: playlists
+    if playlists.present?
+      render json: playlists
+    else
+      render json: {error: "There is no playlist available!"}
+    end
   end
   
   def show

@@ -5,8 +5,12 @@ class AlbumsController < ApplicationController
   before_action :authorize_album_owner, only: [:update, :destroy, :add_song]
 
   def index
-    album = Album.all
-    render json: album
+    albums = Album.all
+    if albums.present?
+      render json: albums
+    else
+      render json: {error: "There is no album present!"}
+    end
   end
 
   # def create

@@ -4,17 +4,10 @@ class SongsController < ApplicationController
   before_action :validate_listener, only: [:recently_played_songs]
   before_action :check_song_owner, only: [:update, :destroy]
   
-  # def index
-  #   songs = songs_per_page
-  #   render json: songs
-  # end
-  
   def index
-    # byebug
     songs = songs_per_page
     if songs.present?
       if @current_user.user_type == 'Artist'
-        # byebug
         followed_ids = @current_user.followers.pluck(:id)
         songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
       elsif @current_user.user_type == 'Listener'
@@ -30,29 +23,16 @@ class SongsController < ApplicationController
   def show
     @song.increment!(:play_count)
     @current_user.recentyly_playeds.create(song_id: @song.id)
-    
+  
     if @song.status == 'public' || @current_user.followees.include?(@song.artist)
       render json: @song
     else
       render json: {error: "This is private song, please follow it's artist to listen this song!"}, status: :bad_request
     end
     
-    # byebug
-    # if @current_user.user_type == 'Listener'
-    #   byebug
-    #   if @current_user.followees(@user)
-    #     @song.increment!(:play_count)
-    #     @current_user.recentyly_playeds.create(song_id: @song.id)
-    #     render json: @song
-    #   else
-    #     render json: {error: "This song is private!"}
-    #   end
-    # end
-    
   end
   
   def create
-    # byebug
     song = @current_user.songs.new(song_params)
     if song.save
       song.file.attach(params[:file])
@@ -71,16 +51,11 @@ class SongsController < ApplicationController
   end
   
   def destroy
-    # if song_owner?(@song)
-    # byebug
     if @song.destroy
       render json: { message: 'Song deleted successfully' }
     else
       render json: {error: 'Failed to destroy!'}
     end
-    # else
-    #   render json: { error: 'You are not authorized to delete this song' }, status: :unauthorized
-    # end
   end
   
   def songs_per_page
@@ -88,11 +63,9 @@ class SongsController < ApplicationController
   end
   
   def search 
-    # byebug
     if params[:query].present?
       query = params[:query]
       songs = Song.where("title LIKE ? OR genre LIKE ?", "%#{query}%", "%#{query}%")
-      # byebug
       if songs.present?
         render json: {result: songs}
       else
@@ -118,7 +91,6 @@ class SongsController < ApplicationController
   end
   
   def recently_played_songs
-    # byebug
     recently_played_songs = @current_user.recentyly_playeds
     if recently_played_songs.present?
       render json: recently_played_songs
@@ -146,7 +118,6 @@ class SongsController < ApplicationController
       render json: {error: "You don't have permission for this action!"}, status: :unprocessable_entity
     end
   end
-  
   
   def song_params
     params.permit(:title, :genre, :album_id, :status, :file)
