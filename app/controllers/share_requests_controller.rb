@@ -15,12 +15,33 @@ class ShareRequestsController < ApplicationController
   end
   
   def create
+    @split = Split.find(params[:split_id])
+    if @split.present?
+      share_request = @split.share_requests.new(request_params)
+      share_request.requester = @current_user
+      if share_request.save
+        render json: share_request, status: :created
+      else
+        render json: { error: share_request.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: 'No split for given id!' }, status: :unprocessable_entity
+    end
+  end
+  
+  
+  
+  
+  
+  def create
     share_request = ShareRequest.new(
       requesting_artist: @current_user,
       receiving_artist: @receiving_artist,
       requested_percent: params[:requested_percent],
       price: params[:price],
-      status: 'pending'
+      status: 'pending',
+      request_type: params[:request_type],
+      split_id: params[:split_id]
     )
     unless share_request.receiving_artist == @current_user
       if share_request.save
@@ -34,26 +55,26 @@ class ShareRequestsController < ApplicationController
   end
   
   def accept
-      requesting_artist = @share_request.requesting_artist
-      receiving_artist = @share_request.receiving_artist
-      requested_percentage = @share_request.requested_percent
-      requesting_artist.total_share_percentage += requested_percentage
-      receiving_artist.total_share_percentage -= requested_percentage
-      if requesting_artist.save && receiving_artist.save
-        @share_request.update(status: 'accepted')
-        render json: { message: 'Request accepted.' }
-      else
-        render json: { error: 'Failed to accept share request!' }, status: :unprocessable_entity
-      end
+    requesting_artist = @share_request.requesting_artist
+    receiving_artist = @share_request.receiving_artist
+    requested_percentage = @share_request.requested_percent
+    requesting_artist.total_share_percentage += requested_percentage
+    receiving_artist.total_share_percentage -= requested_percentage
+    if requesting_artist.save && receiving_artist.save
+      @share_request.update(status: 'accepted')
+      render json: { message: 'Request accepted.' }
+    else
+      render json: { error: 'Failed to accept share request!' }, status: :unprocessable_entity
+    end
   end
   
   def reject
-      @share_request.status = 'rejected'
-      if @share_request.save
-        render json: { message: 'Request rejected' }
-      else
-        render json: { error: 'Failed to reject share request!' }, status: :unprocessable_entity
-      end
+    @share_request.status = 'rejected'
+    if @share_request.save
+      render json: { message: 'Request rejected' }
+    else
+      render json: { error: 'Failed to reject share request!' }, status: :unprocessable_entity
+    end
   end
   
   def destroy
@@ -65,6 +86,7 @@ class ShareRequestsController < ApplicationController
   end
   
   private
+  
   
   def find_request
     begin
@@ -91,15 +113,19 @@ class ShareRequestsController < ApplicationController
       render json: {error: "You are not authorized for this request!"}, status: :unprocessable_entity
     end
   end
-
+  
   def check_status
     unless @share_request.status == 'pending'
       render json: "Request is not pending"
     end
   end
   
-  def share_params
-    params.permit(:receiver_id, :requested_percent, :price)
+  # def share_params
+  #   params.permit(:receiver_id, :requested_percent, :price, :request_type, :split_id)
+  # end
+  
+  def request_params
+    params.permit(:price, :request_percentage)
   end
   
   def validate_artist

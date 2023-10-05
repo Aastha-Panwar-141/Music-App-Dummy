@@ -13,13 +13,18 @@ class User < ApplicationRecord
   # has_many :share_requests, dependent: :destroy
   has_many :receiving_artist, foreign_key: :receiver_id, class_name: 'ShareRequest'
   has_many :requesting_artist, foreign_key: :requester_id, class_name: 'ShareRequest'
-
+  
+  has_many :splits, dependent: :destroy, foreign_key: :receiver_id
+  has_many :split_requests, foreign_key: :requester_id, class_name: 'Split'
+  has_many :share_requests
   
   has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
   # a user has many followees through the followed_users
   has_many :followees, through: :followed_users
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
   has_many :followers, through: :following_users
+  after_create :initial_split
+
   
   def generate_password_token!
     self.reset_password_token = generate_token
@@ -38,6 +43,13 @@ class User < ApplicationRecord
   end
   
   private
+
+  def initial_split
+    byebug
+    if self.user_type == 'Artist'
+      Split.create(receiver_id: self.id, requester_id: self.id, split_type: 'Artist')
+    end
+  end
   
   def generate_token
     SecureRandom.hex(10)

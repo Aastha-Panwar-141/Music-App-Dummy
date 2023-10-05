@@ -1,6 +1,5 @@
-class ShareRequest < ApplicationRecord
+class Split < ApplicationRecord
     belongs_to :requester, class_name: 'User', foreign_key: 'requester_id'
     belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
-    # belongs_to :user
-    belongs_to :split
+    has_many :share_requests, dependent: :destroy
 end

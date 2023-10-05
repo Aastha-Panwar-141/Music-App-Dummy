@@ -6,6 +6,8 @@ class CreateShareRequests < ActiveRecord::Migration[7.0]
       t.integer :requested_percent
       t.string :status, default: 'pending'
       t.integer :price
+      t.string :request_type
+      t.references :split, null: false, foreign_key: true
 
       t.timestamps
     end

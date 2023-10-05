@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   resources :playlists do
     member do
       post 'add_song'
-      post 'merge_playlists'
+      # post 'merge_playlists'
     end
     collection do
       post 'merge_playlists'
@@ -51,7 +51,7 @@ Rails.application.routes.draw do
     end
     collection do
       get 'all_followers'
-      get 'all_followees'
+      get 'all_followees' 
     end
   end
 
@@ -64,6 +64,14 @@ Rails.application.routes.draw do
       get 'my_requests'
     end
   end
+
+  resources :splits
+
+  resources :splits do
+    post 'share_requests'
+  end
+
+  # resources :share_requests
 
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'

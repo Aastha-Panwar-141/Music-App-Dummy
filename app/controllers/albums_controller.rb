@@ -69,7 +69,7 @@ class AlbumsController < ApplicationController
       render json: { error: 'Song is already in the album' }, status: :unprocessable_entity
     else
       @album.songs << @song
-      render json: { message: 'Song added to the album' }
+      render json: { message: 'Song added to the album' }, status: :ok
     end
   end
   
@@ -83,7 +83,7 @@ class AlbumsController < ApplicationController
     begin
       @album = Album.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No record found for given id.'}
+      render json: {error: 'No album found for given id.'}
     end
   end
 
@@ -91,7 +91,7 @@ class AlbumsController < ApplicationController
     begin
       @song = Song.find(params[:song_id])
     rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No record found for given id.'}
+      render json: {error: 'No song found for given id.'}
     end
   end
 
