@@ -11,12 +11,13 @@ class User < ApplicationRecord
   has_many :playlists, dependent: :destroy
   has_many :recentyly_playeds
   # has_many :share_requests, dependent: :destroy
-  has_many :receiving_artist, foreign_key: :receiver_id, class_name: 'ShareRequest'
-  has_many :requesting_artist, foreign_key: :requester_id, class_name: 'ShareRequest'
+  # has_many :receiving_artist, foreign_key: :receiver_id, class_name: 'ShareRequest'
+  # has_many :requesting_artist, foreign_key: :requester_id, class_name: 'ShareRequest'
   
-  has_many :splits, dependent: :destroy, foreign_key: :receiver_id
-  has_many :split_requests, foreign_key: :requester_id, class_name: 'Split'
-  has_many :share_requests
+  # has_many :splits, dependent: :destroy, foreign_key: :receiver_id
+  has_many :sent_requests, foreign_key: :requester_id, class_name: 'ShareRequest'
+  has_many :split_requests, foreign_key: :receiver_id, class_name: 'Split'
+  has_many :share_requests, dependent: :destroy, foreign_key: :receiver_id
   
   has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
   # a user has many followees through the followed_users
@@ -45,7 +46,7 @@ class User < ApplicationRecord
   private
 
   def initial_split
-    byebug
+    # byebug
     if self.user_type == 'Artist'
       Split.create(receiver_id: self.id, requester_id: self.id, split_type: 'Artist')
     end

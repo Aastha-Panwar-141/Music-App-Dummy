@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       post 'email_update'
       get 'artists'
       get 'listeners'
+      get 'all_splits'
+      get 'all_share_requests'
+      get 'all_sent_requests'
     end
     post 'login', on: :collection
     get 'recommended_genre', on: :member
@@ -65,13 +68,18 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :splits
+  # resources :splits
 
   resources :splits do
-    post 'share_requests'
+    post 'share_requests', to: 'share_requests#create'
   end
 
-  # resources :share_requests
+  resources :share_requests, only: [] do
+    member do
+      post 'accept'
+      post 'reject'
+    end
+  end
 
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'

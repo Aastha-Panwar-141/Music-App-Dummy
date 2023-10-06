@@ -1,9 +1,12 @@
 class ShareRequestsController < ApplicationController
-  before_action :validate_artist
+  before_action :validate_artist, except: [:create]
+  before_action :validate_listener, only: [:create]
+  
   before_action :find_request, only: [:accept, :reject, :destroy]
+  before_action :find_split, only: [:create]
   before_action :check_owner, only: [:accept, :reject]
   before_action :check_status, only: [:accept, :reject]
-  before_action :find_receiver_artist, only: [:create]
+  # before_action :find_receiver_artist, only: [:create]
   
   def index
     share_requests = ShareRequest.all 
@@ -15,58 +18,45 @@ class ShareRequestsController < ApplicationController
   end
   
   def create
-    @split = Split.find(params[:split_id])
+    # byebug
     if @split.present?
-      share_request = @split.share_requests.new(request_params)
+      share_request = @split.share_requests.new(request_params.merge(receiver_id: @split.receiver_id, request_type: @split.split_type))
       share_request.requester = @current_user
-      if share_request.save
-        render json: share_request, status: :created
+      if (@split.percentage > 0 && share_request.requested_percent < @split.percentage)
+        if share_request.save
+          render json: {message: "Request sent successfully.", request: share_request}, status: :created
+        else
+          render json: { error: share_request.errors.full_messages }, status: :unprocessable_entity
+        end
       else
-        render json: { error: share_request.errors.full_messages }, status: :unprocessable_entity
+        render json: {error: "No share remains to request for!"}, status: :unprocessable_entity
       end
     else
       render json: { error: 'No split for given id!' }, status: :unprocessable_entity
     end
   end
   
-  
-  
-  
-  
-  def create
-    share_request = ShareRequest.new(
-      requesting_artist: @current_user,
-      receiving_artist: @receiving_artist,
-      requested_percent: params[:requested_percent],
-      price: params[:price],
-      status: 'pending',
-      request_type: params[:request_type],
-      split_id: params[:split_id]
-    )
-    unless share_request.receiving_artist == @current_user
-      if share_request.save
-        render json: {result: "Deal Request sent successfully!", created_request: share_request}, status: :created
-      else
-        render json: {error: share_request.errors.full_messages}, status: :unprocessable_entity
-      end
-    else
-      render json: {error: "You can't request to yourself!"}, status: :unprocessable_entity
-    end
-  end
-  
   def accept
-    requesting_artist = @share_request.requesting_artist
-    receiving_artist = @share_request.receiving_artist
-    requested_percentage = @share_request.requested_percent
-    requesting_artist.total_share_percentage += requested_percentage
-    receiving_artist.total_share_percentage -= requested_percentage
-    if requesting_artist.save && receiving_artist.save
+    requester = @share_request.requester
+    receiver = @share_request.receiver
+    requested_percent = @share_request.requested_percent
+    receiver_split = receiver.splits.where(split_type: 'Artist').first
+    receiver_split.percentage -= requested_percent
+    requester.total_share_percentage += requested_percent
+    if receiver_split.save && receiver.save && requester.save
+      # byebug
       @share_request.update(status: 'accepted')
+      new_split = Split.create!(
+        requester_id: receiver.id,
+        receiver_id: requester.id,
+        split_type: 'Artist',
+        percentage: requested_percent
+      )
       render json: { message: 'Request accepted.' }
     else
       render json: { error: 'Failed to accept share request!' }, status: :unprocessable_entity
     end
-  end
+  end  
   
   def reject
     @share_request.status = 'rejected'
@@ -90,9 +80,18 @@ class ShareRequestsController < ApplicationController
   
   def find_request
     begin
+      # byebug
       @share_request = ShareRequest.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       render json: {result: "No share request found for given id."}, status: :unprocessable_entity 
+    end
+  end
+  
+  def find_split
+    begin
+      @split = Split.find(params[:split_id])
+    rescue ActiveRecord::RecordNotFound
+      render json: {result: "No split found for given id."}, status: :unprocessable_entity 
     end
   end
   
@@ -125,12 +124,18 @@ class ShareRequestsController < ApplicationController
   # end
   
   def request_params
-    params.permit(:price, :request_percentage)
+    params.permit(:price, :requested_percent, :split_id)
   end
   
   def validate_artist
     if @current_user.user_type != 'Artist'
       render json: { error: 'Listener are Not Allowed for this request' }, status: :forbidden
+    end
+  end 
+  
+  def validate_listener
+    if @current_user.user_type != 'Listener'
+      render json: { error: 'Artist are Not Allowed for this request' }, status: :forbidden
     end
   end 
   
