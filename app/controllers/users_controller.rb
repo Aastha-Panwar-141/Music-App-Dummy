@@ -91,34 +91,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def all_splits
-    if @current_user.split_requests.present?
-      @splits = @current_user.split_requests
-      render json: @splits
-    else
-      render json: {error: "You have no split!"}
-    end
-  end
-
-  def all_share_requests
-    if @current_user.share_requests.present?
-      @share_requests = @current_user.share_requests
-      render json: @share_requests
-    else
-      render json: {error: "You have no share request!"}
-    end
-  end
-
-  def all_sent_requests
-    # byebug
-    if @current_user.sent_requests.present?
-      @sent_requests = @current_user.sent_requests
-      render json: @sent_requests
-    else
-      render json: {error: "You have no sent request!"}
-    end
-  end
-
   private
   
   def user_params

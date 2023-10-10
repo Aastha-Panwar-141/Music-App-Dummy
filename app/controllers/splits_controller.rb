@@ -8,12 +8,5 @@ class SplitsController < ApplicationController
       render json: {error: "There is no split!"}
     end
   end
-  
-  
 
-  # def initial_setup
-  #   receiver_id: @current_user
-  #   requester_id: @current_user
-  # end
-  
 end

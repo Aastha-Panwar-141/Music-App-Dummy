@@ -10,15 +10,15 @@ class User < ApplicationRecord
   validates :user_type, presence: true, inclusion: { in: ['Listener', 'Artist'] }
   has_many :playlists, dependent: :destroy
   has_many :recentyly_playeds
-  # has_many :share_requests, dependent: :destroy
-  # has_many :receiving_artist, foreign_key: :receiver_id, class_name: 'ShareRequest'
-  # has_many :requesting_artist, foreign_key: :requester_id, class_name: 'ShareRequest'
   
-  # has_many :splits, dependent: :destroy, foreign_key: :receiver_id
   has_many :sent_requests, foreign_key: :requester_id, class_name: 'ShareRequest'
   has_many :split_requests, foreign_key: :receiver_id, class_name: 'Split'
   has_many :share_requests, dependent: :destroy, foreign_key: :receiver_id
+  has_many :song_sent_requests, foreign_key: :requester_id, class_name: 'SongRequest'
   
+  # has_many :song_requests, dependent: :destroy, foreign_key: :receiver_id
+  # has_many :song_splits
+
   has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
   # a user has many followees through the followed_users
   has_many :followees, through: :followed_users
@@ -26,7 +26,6 @@ class User < ApplicationRecord
   has_many :followers, through: :following_users
   after_create :initial_split
 
-  
   def generate_password_token!
     self.reset_password_token = generate_token
     self.reset_password_sent_at = Time.now.utc

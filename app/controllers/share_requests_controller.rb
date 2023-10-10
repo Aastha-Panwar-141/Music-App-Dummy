@@ -1,12 +1,10 @@
 class ShareRequestsController < ApplicationController
-  before_action :validate_artist, except: [:create]
-  before_action :validate_listener, only: [:create]
-  
+  before_action :validate_artist, except: [:create, :all_splits, :all_sent_requests, :purchased_splits]
+  before_action :validate_listener, only: [:create, :all_sent_requests, :purchased_splits]
   before_action :find_request, only: [:accept, :reject, :destroy]
   before_action :find_split, only: [:create]
   before_action :check_owner, only: [:accept, :reject]
   before_action :check_status, only: [:accept, :reject]
-  # before_action :find_receiver_artist, only: [:create]
   
   def index
     share_requests = ShareRequest.all 
@@ -18,7 +16,6 @@ class ShareRequestsController < ApplicationController
   end
   
   def create
-    # byebug
     if @split.present?
       share_request = @split.share_requests.new(request_params.merge(receiver_id: @split.receiver_id, request_type: @split.split_type))
       share_request.requester = @current_user
@@ -29,7 +26,7 @@ class ShareRequestsController < ApplicationController
           render json: { error: share_request.errors.full_messages }, status: :unprocessable_entity
         end
       else
-        render json: {error: "No share remains to request for!"}, status: :unprocessable_entity
+        render json: {error: "Requested shares are not available!"}, status: :unprocessable_entity
       end
     else
       render json: { error: 'No split for given id!' }, status: :unprocessable_entity
@@ -44,7 +41,6 @@ class ShareRequestsController < ApplicationController
     receiver_split.percentage -= requested_percent
     requester.total_share_percentage += requested_percent
     if receiver_split.save && receiver.save && requester.save
-      # byebug
       @share_request.update(status: 'accepted')
       new_split = Split.create!(
         requester_id: receiver.id,
@@ -66,6 +62,34 @@ class ShareRequestsController < ApplicationController
       render json: { error: 'Failed to reject share request!' }, status: :unprocessable_entity
     end
   end
+
+  # def song_requests
+  #   if song_requests = ShareRequest.where(request_type: 'song')
+  #     render json: song_requests
+  #   else
+  #     render json: {error: "No split for song!"}
+  #   end
+  # end
+
+  # def accept_song_request
+  #   song_request = ShareRequest.find(params[:id])
+  #   if song_request.request_type == 'song' && song_request.status == 'pending'
+  #     song_request.update(status: 'accepted')
+  #     render json: { message: 'Song request accepted' }
+  #   else
+  #     render json: { error: 'Invalid song request or status' }, status: :unprocessable_entity
+  #   end
+  # end
+
+  # def reject_song_request
+  #   song_request = ShareRequest.find(params[:id])
+  #   if song_request.request_type == 'song' && song_request.status == 'pending'
+  #     song_request.update(status: 'rejected')
+  #     render json: { message: 'Song request rejected' }
+  #   else
+  #     render json: { error: 'Invalid song request or status' }, status: :unprocessable_entity
+  #   end
+  # end
   
   def destroy
     if @share_request.destroy
@@ -75,8 +99,48 @@ class ShareRequestsController < ApplicationController
     end
   end
   
-  private
+  def all_splits
+    if @current_user.split_requests.present?
+      @splits = @current_user.split_requests
+      render json: @splits
+    else
+      render json: {error: "You have no split!"}
+    end
+  end
   
+  def all_share_requests
+    if @current_user.share_requests.present?
+      @share_requests = @current_user.share_requests
+      render json: @share_requests
+    else
+      render json: {error: "You have no share request!"}
+    end
+  end
+  
+  def all_sent_requests
+    if @current_user.sent_requests.present?
+      @sent_requests = @current_user.sent_requests
+      render json: @sent_requests
+    else
+      render json: {error: "You have no sent request!"}
+    end
+  end
+  
+  def purchased_splits
+    if @current_user.sent_requests.present?
+      @sent_requests = @current_user.sent_requests
+      purchased_splits = @sent_requests.where(status: 'accepted')
+      if purchased_splits.present?
+        render json: purchased_splits
+      else
+        render json: {error: "No accepted request!"}, status: :unprocessable_entity
+      end
+    else
+      render json: {error: "You have no sent request!"}
+    end
+  end
+  
+  private
   
   def find_request
     begin

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_05_100429) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_09_121753) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -95,6 +95,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_05_100429) do
     t.index ["split_id"], name: "index_share_requests_on_split_id"
   end
 
+  create_table "song_requests", force: :cascade do |t|
+    t.integer "requester_id"
+    t.integer "receiver_id"
+    t.integer "requested_percent"
+    t.string "status", default: "pending"
+    t.integer "price"
+    t.integer "song_split_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["song_split_id"], name: "index_song_requests_on_song_split_id"
+  end
+
+  create_table "song_splits", force: :cascade do |t|
+    t.integer "requester_id"
+    t.integer "receiver_id"
+    t.integer "percentage"
+    t.integer "song_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["song_id"], name: "index_song_splits_on_song_id"
+  end
+
   create_table "songs", force: :cascade do |t|
     t.string "title"
     t.string "genre"
@@ -140,6 +162,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_05_100429) do
   add_foreign_key "recentyly_playeds", "songs"
   add_foreign_key "recentyly_playeds", "users"
   add_foreign_key "share_requests", "splits"
+  add_foreign_key "song_requests", "song_splits"
+  add_foreign_key "song_splits", "songs"
   add_foreign_key "songs", "albums"
   add_foreign_key "songs", "users"
 end

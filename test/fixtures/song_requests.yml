@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requester_id: 1
+  receiver_id: 1
+  requested_percent: 1
+  status: MyString
+  price: 1
+  request_type: MyString
+  split: one
+
+two:
+  requester_id: 1
+  receiver_id: 1
+  requested_percent: 1
+  status: MyString
+  price: 1
+  request_type: MyString
+  split: two

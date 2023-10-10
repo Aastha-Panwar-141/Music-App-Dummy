@@ -33,12 +33,12 @@ class SongsController < ApplicationController
   end
   
   def create
-    song = @current_user.songs.new(song_params)
-    if song.save
-      song.file.attach(params[:file])
-      render json: { message: 'Song added successfully', song: song }, status: :created
+    @song = @current_user.songs.new(song_params)
+    if @song.save
+      @song.file.attach(params[:file])
+      render json: { message: 'Song added successfully', song: @song }, status: :created
     else
-      render json: { error: song.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
