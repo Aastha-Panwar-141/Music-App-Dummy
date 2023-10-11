@@ -51,6 +51,7 @@ class SongsController < ApplicationController
   end
   
   def destroy
+    byebug
     if @song.destroy
       render json: { message: 'Song deleted successfully' }
     else

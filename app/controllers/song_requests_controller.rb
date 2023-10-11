@@ -85,7 +85,7 @@ class SongRequestsController < ApplicationController
   end
 
   def all_accepted_request
-    byebug
+    # byebug
     if @current_user.song_sent_requests.present?
       @sent_requests = @current_user.song_sent_requests
       purchased_splits = @sent_requests.where(status: 'accepted')

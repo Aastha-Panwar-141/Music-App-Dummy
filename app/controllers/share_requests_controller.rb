@@ -139,6 +139,11 @@ class ShareRequestsController < ApplicationController
       render json: {error: "You have no sent request!"}
     end
   end
+
+  def transfer_share
+    ShareTransferWorker.perform_async("01-10-2023", "01-11-2023")
+    render json: "request transfered!"
+  end
   
   private
   

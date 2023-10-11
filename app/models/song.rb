@@ -3,15 +3,15 @@ class Song < ApplicationRecord
   belongs_to :artist, foreign_key: 'user_id'
   belongs_to :album
   has_many :playlist_songs, dependent: :destroy
-  has_many :playlists, through: :playlist_songs
-  has_many :recentyly_playeds
+  has_many :playlists, through: :playlist_songs, dependent: :destroy
+  has_many :recentyly_playeds, dependent: :destroy
   after_create :initial_split
   
-  has_many :song_sent_requests, foreign_key: :requester_id, class_name: 'SongRequest'
-  has_many :split_requests, foreign_key: :receiver_id, class_name: 'SongSplit'
+  # has_many :song_sent_requests, foreign_key: :requester_id, class_name: 'SongRequest'
+  has_many :split_requests, foreign_key: :receiver_id, class_name: 'SongSplit', dependent: :destroy
   
-  has_many :song_requests, dependent: :destroy, foreign_key: :receiver_id
-  has_many :song_splits
+  # has_many :song_requests, dependent: :destroy, foreign_key: :receiver_id
+  has_many :song_splits, dependent: :destroy
 
   validates :title, presence: true
   validates :genre, presence: true
