@@ -19,8 +19,11 @@ gem 'will_paginate', '~> 3.1.0'
 
 gem "byebug"
 gem "active_model_serializers"
+
 gem "sidekiq-cron"
-gem "sidekiq"
+gem "sidekiq", '~> 6.5.9'
+gem "redis", '~> 4.8.1'
+
 # gem 'sinatra' #for web-ui
 
 # Use ActiveModel has_secure_password

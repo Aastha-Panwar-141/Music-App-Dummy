@@ -178,15 +178,13 @@ GEM
     rake (13.0.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
-    redis-client (0.17.0)
-      connection_pool
+    redis (4.8.1)
     reline (0.3.8)
       io-console (~> 0.5)
-    sidekiq (7.1.6)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.14.0)
+    sidekiq (6.5.12)
+      connection_pool (>= 2.2.5, < 3)
+      rack (~> 2.0)
+      redis (>= 4.5.0, < 5)
     sidekiq-cron (1.10.1)
       fugit (~> 1.8)
       globalid (>= 1.0.1)
@@ -216,7 +214,8 @@ DEPENDENCIES
   kaminari
   puma (~> 5.0)
   rails (~> 7.0.8)
-  sidekiq
+  redis (~> 4.8.1)
+  sidekiq (~> 6.5.9)
   sidekiq-cron
   sqlite3 (~> 1.4)
   tzinfo-data

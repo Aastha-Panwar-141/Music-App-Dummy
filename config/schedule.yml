@@ -1,3 +1,5 @@
-my_first_job:
-   cron: "*/5 * * * *"
+share_request_job:
+   cron: "*/5 * * * *" 
    class: "ShareTransferWorker"
+   queue: default
+   args: "share_req"

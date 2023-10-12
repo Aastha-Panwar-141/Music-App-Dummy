@@ -62,34 +62,6 @@ class ShareRequestsController < ApplicationController
       render json: { error: 'Failed to reject share request!' }, status: :unprocessable_entity
     end
   end
-
-  # def song_requests
-  #   if song_requests = ShareRequest.where(request_type: 'song')
-  #     render json: song_requests
-  #   else
-  #     render json: {error: "No split for song!"}
-  #   end
-  # end
-
-  # def accept_song_request
-  #   song_request = ShareRequest.find(params[:id])
-  #   if song_request.request_type == 'song' && song_request.status == 'pending'
-  #     song_request.update(status: 'accepted')
-  #     render json: { message: 'Song request accepted' }
-  #   else
-  #     render json: { error: 'Invalid song request or status' }, status: :unprocessable_entity
-  #   end
-  # end
-
-  # def reject_song_request
-  #   song_request = ShareRequest.find(params[:id])
-  #   if song_request.request_type == 'song' && song_request.status == 'pending'
-  #     song_request.update(status: 'rejected')
-  #     render json: { message: 'Song request rejected' }
-  #   else
-  #     render json: { error: 'Invalid song request or status' }, status: :unprocessable_entity
-  #   end
-  # end
   
   def destroy
     if @share_request.destroy
@@ -141,7 +113,7 @@ class ShareRequestsController < ApplicationController
   end
 
   def transfer_share
-    ShareTransferWorker.perform_async("01-10-2023", "01-11-2023")
+    ShareTransferWorker.perform_async
     render json: "request transfered!"
   end
   

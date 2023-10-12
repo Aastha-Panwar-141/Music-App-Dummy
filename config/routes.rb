@@ -1,6 +1,9 @@
+require 'sidekiq/web'
+require 'sidekiq/cron/web'
+
 Rails.application.routes.draw do
-  # resources :follows
-  
+  mount Sidekiq::Web => "/sidekiq"
+
   resources :users, only: [:index, :create] do
     member do
       put 'update_details', to: 'users#update'
@@ -103,5 +106,12 @@ Rails.application.routes.draw do
   post 'password/reset', to: 'passwords#reset'
   put 'password/update', to: 'passwords#update'
   
-  
+
+  # get "welcome/index"
+  # # route where any visitor require the helloWorldJob to be triggered
+  # post "welcome/trigger_job"
+  # # where visitor are redirected once job has been called
+  # get "other/job_done"
+  # root to: "welcome#index"
+
 end
