@@ -1,5 +1,5 @@
 class ShareRequestsController < ApplicationController
-  before_action :validate_artist, except: [:create, :all_splits, :all_sent_requests, :purchased_splits]
+  before_action :validate_artist, except: [:create, :all_splits, :all_sent_requests, :purchased_splits, :destroy]
   before_action :validate_listener, only: [:create, :all_sent_requests, :purchased_splits]
   before_action :find_request, only: [:accept, :reject, :destroy]
   before_action :find_split, only: [:create]
@@ -112,10 +112,10 @@ class ShareRequestsController < ApplicationController
     end
   end
 
-  def transfer_share
-    ShareTransferWorker.perform_async
-    render json: "request transfered!"
-  end
+  # def schedule_request
+  #   ShareTransferWorker.perform_at(5.minute.from_now, '')
+  #   render json: "request transfered!"
+  # end
   
   private
   

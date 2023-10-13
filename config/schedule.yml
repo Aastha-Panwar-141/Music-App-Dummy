@@ -1,5 +1,6 @@
 share_request_job:
-   cron: "*/5 * * * *" 
+   # cron: "* * * * * *"  #every min
+   cron: "0 0 */3 * *" # every 3 days
    class: "ShareTransferWorker"
    queue: default
-   args: "share_req"
+   
