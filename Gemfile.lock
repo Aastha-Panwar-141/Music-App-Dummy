@@ -85,9 +85,18 @@ GEM
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    diff-lcs (1.5.0)
+    docile (1.4.0)
     erubi (1.12.0)
     et-orbi (1.2.7)
       tzinfo
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
+    faker (3.2.1)
+      i18n (>= 1.8.11, < 2)
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -181,6 +190,25 @@ GEM
     redis (4.8.1)
     reline (0.3.8)
       io-console (~> 0.5)
+    rspec-core (3.12.2)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.6)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-rails (6.0.3)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      railties (>= 6.1)
+      rspec-core (~> 3.12)
+      rspec-expectations (~> 3.12)
+      rspec-mocks (~> 3.12)
+      rspec-support (~> 3.12)
+    rspec-support (3.12.1)
+    shoulda-matchers (5.3.0)
+      activesupport (>= 5.2.0)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
@@ -189,6 +217,12 @@ GEM
       fugit (~> 1.8)
       globalid (>= 1.0.1)
       sidekiq (>= 6)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.4)
     sqlite3 (1.6.5-x86_64-linux)
     stringio (3.0.8)
     thor (1.2.2)
@@ -210,13 +244,18 @@ DEPENDENCIES
   bootsnap
   byebug
   debug
+  factory_bot_rails
+  faker
   jwt
   kaminari
   puma (~> 5.0)
   rails (~> 7.0.8)
   redis (~> 4.8.1)
+  rspec-rails
+  shoulda-matchers (~> 5.0)
   sidekiq (~> 6.5.9)
   sidekiq-cron
+  simplecov
   sqlite3 (~> 1.4)
   tzinfo-data
   will_paginate (~> 3.1.0)

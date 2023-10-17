@@ -15,12 +15,8 @@ class User < ApplicationRecord
   has_many :split_requests, foreign_key: :receiver_id, class_name: 'Split'
   has_many :share_requests, dependent: :destroy, foreign_key: :receiver_id
   has_many :song_sent_requests, foreign_key: :requester_id, class_name: 'SongRequest'
-  
-  # has_many :song_requests, dependent: :destroy, foreign_key: :receiver_id
-  # has_many :song_splits
 
   has_many :followed_users, foreign_key: :follower_id, class_name: 'Follow'
-  # a user has many followees through the followed_users
   has_many :followees, through: :followed_users
   has_many :following_users, foreign_key: :followee_id, class_name: 'Follow'
   has_many :followers, through: :following_users
@@ -54,5 +50,4 @@ class User < ApplicationRecord
   def generate_token
     SecureRandom.hex(10)
   end
-  
 end
