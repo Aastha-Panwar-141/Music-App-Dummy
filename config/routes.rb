@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     end
     
     collection do
-      post 'email_update'
+      # post 'email_update'
       get 'artists'
       get 'listeners'
       get 'my_splits', to: 'share_requests#all_splits'

@@ -39,7 +39,7 @@ class ShareRequestsController < ApplicationController
     requested_percent = @share_request.requested_percent
     receiver_split = receiver.splits.where(split_type: 'Artist').first
     receiver_split.percentage -= requested_percent
-    requester.total_share_percentage += requested_percent
+    # requester.total_share_percentage += requested_percent
     if receiver_split.save && receiver.save && requester.save
       @share_request.update(status: 'accepted')
       new_split = Split.create!(

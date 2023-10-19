@@ -1,10 +1,17 @@
 require 'faker'
 
 FactoryBot.define do
+  # byebug
   factory :user do
-    username      { Faker::Name.username }
+    # byebug
+    username      { Faker::Name.name }
     email         { Faker::Internet.email}
     password      { Faker::Internet.password(min_length: 8)}
     user_type     {['Artist','Listener'].sample}
+    
+    # username { 'Aastha' }
+    # password  { 'admin@123' }
+    # email { 'aastha@gmail.com' }
+    # user_type { 'Artist' }
   end
 end

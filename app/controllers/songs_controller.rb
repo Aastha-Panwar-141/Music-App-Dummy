@@ -27,7 +27,7 @@ class SongsController < ApplicationController
     if @song.status == 'public' || @current_user.followees.include?(@song.artist)
       render json: @song
     else
-      render json: {error: "This is private song, please follow it's artist to listen this song!"}, status: :bad_request
+      render json: {error: "This is private song, please follow it's artist to listen this song!"}, status: :unprocessable_entity
     end
     
   end

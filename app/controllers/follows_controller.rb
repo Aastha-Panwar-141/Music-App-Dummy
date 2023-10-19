@@ -65,7 +65,7 @@ class FollowsController < ApplicationController
     begin
       @user = User.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No record found for given id.'}, status: :bad_request
+      render json: {error: 'No record found for given id.'}, status: :unprocessable_entity
     end
   end
 

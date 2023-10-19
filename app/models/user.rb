@@ -9,7 +9,7 @@ class User < ApplicationRecord
   length: { minimum: 6 }
   validates :user_type, presence: true, inclusion: { in: ['Listener', 'Artist'] }
   has_many :playlists, dependent: :destroy
-  has_many :recentyly_playeds
+  has_many :recentyly_playeds, dependent: :destroy
   
   has_many :sent_requests, foreign_key: :requester_id, class_name: 'ShareRequest'
   has_many :split_requests, foreign_key: :receiver_id, class_name: 'Split'
