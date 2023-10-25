@@ -29,11 +29,6 @@ class FollowsController < ApplicationController
     else
       render json: {error: "You are not following this Artist!"}, status: :unprocessable_entity
     end
-    # if @current_user.followed_users.find_by(followee_id: @user.id).destroy
-    #   render json: @user
-    # else
-    #   render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
-    # end
   end
   
   def all_followers

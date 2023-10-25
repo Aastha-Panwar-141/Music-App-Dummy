@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     get 'recommended_genre', on: :member
   end
   
-  resources :artists do
+  resources :artists, only: [] do
     get 'my_songs', on: :collection
     get 'my_albums', on: :collection
   end

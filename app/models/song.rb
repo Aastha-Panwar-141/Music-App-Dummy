@@ -20,18 +20,7 @@ class Song < ApplicationRecord
   
   private
   
-  # def create_initial_split
-  #   initial_split = splits.create(
-  #   requester: artist,
-  #   receiver:artist,
-  #   split_type: 'song',
-  #   percentage: 100
-  #   )
-  #   initial_split
-  # end
-
   def initial_split
-    # byebug
     SongSplit.create(receiver_id: artist.id, requester_id: artist.id, song_id: self.id, percentage: 100)
   end
 end

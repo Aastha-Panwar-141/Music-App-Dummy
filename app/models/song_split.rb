@@ -3,5 +3,4 @@ class SongSplit < ApplicationRecord
   belongs_to :receiver, class_name: 'User', foreign_key: 'receiver_id'
   has_many :song_requests, dependent: :destroy
   belongs_to :song
-
 end

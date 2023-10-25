@@ -41,7 +41,6 @@ class User < ApplicationRecord
   private
 
   def initial_split
-    # byebug
     if self.user_type == 'Artist'
       Split.create(receiver_id: self.id, requester_id: self.id, split_type: 'Artist')
     end
