@@ -1,40 +1,24 @@
 {
   "RSpec": {
     "coverage": {
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/song.rb": {
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/controllers/concerns/json_web_token.rb": {
         "lines": [
           1,
-          1,
-          1,
-          1,
-          1,
+          null,
           1,
           1,
           1,
           null,
+          1,
+          4,
+          4,
+          null,
+          null,
           null,
           1,
+          5,
+          4,
           null,
-          null,
-          1,
-          null,
-          1,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          1,
-          0,
-          null,
-          null
-        ]
-      },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/application_record.rb": {
-        "lines": [
-          1,
-          1,
           null
         ]
       },
@@ -83,14 +67,264 @@
           1,
           null,
           1,
-          1,
-          1,
+          7,
+          2,
           null,
           null,
           null,
           1,
           0,
           null,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/application_record.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/controllers/playlists_controller.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          null,
+          null,
+          1,
+          2,
+          2,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          0,
+          null,
+          1,
+          null,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          null,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          null,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          0,
+          null,
+          null,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          null,
+          null,
+          null,
+          1,
+          null,
+          1,
+          1,
+          0,
+          null,
+          null,
+          null,
+          1,
+          null,
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          2,
+          0,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/controllers/application_controller.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          null,
+          5,
+          5,
+          null,
+          5,
+          4,
+          4,
+          0,
+          null,
+          4,
+          4,
+          null,
+          1,
+          1,
+          null,
+          0,
+          null,
+          null,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/listener.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/playlist.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          1,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/serializers/playlist_serializer.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/playlist_song.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/song.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          null,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/album.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/artist.rb": {
+        "lines": [
+          1,
+          1,
+          1,
           null
         ]
       },
@@ -105,8 +339,10 @@
           null
         ]
       },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/artist.rb": {
+      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/song_split.rb": {
         "lines": [
+          1,
+          1,
           1,
           1,
           1,
@@ -251,38 +487,6 @@
         "branches": {
         }
       },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/controllers/application_controller.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
       "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/controllers/artists_controller.rb": {
         "lines": [
           0,
@@ -292,29 +496,6 @@
           0,
           null,
           null,
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/controllers/concerns/json_web_token.rb": {
-        "lines": [
-          0,
-          null,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          0,
           0,
           0,
           0,
@@ -487,161 +668,6 @@
           0,
           0,
           null,
-          null,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/controllers/playlists_controller.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          null,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          null,
-          0,
-          null,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          null,
-          null,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          0,
-          null,
-          null,
-          null,
-          0,
-          null,
-          null,
-          0,
-          0,
-          0,
-          0,
-          0,
           null,
           0
         ],
@@ -1002,9 +1028,11 @@
           0,
           null,
           0,
+          null,
           0,
           0,
           0,
+          null,
           0,
           0,
           0,
@@ -1354,17 +1382,6 @@
         "branches": {
         }
       },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/album.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
       "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/follow.rb": {
         "lines": [
           0,
@@ -1376,40 +1393,6 @@
           0,
           0,
           null,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/listener.rb": {
-        "lines": [
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/playlist.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0,
-          null,
-          0,
-          null,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/playlist_song.rb": {
-        "lines": [
-          0,
-          0,
-          0,
           0
         ],
         "branches": {
@@ -1449,18 +1432,6 @@
         "branches": {
         }
       },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/models/song_split.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
       "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/serializers/album_serializer.rb": {
         "lines": [
           0,
@@ -1474,19 +1445,6 @@
       },
       "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/serializers/follow_serializer.rb": {
         "lines": [
-          0,
-          0,
-          0
-        ],
-        "branches": {
-        }
-      },
-      "/home/hp/Desktop/Aastha/Rails/music-app-dummy/app/serializers/playlist_serializer.rb": {
-        "lines": [
-          0,
-          0,
-          0,
-          0,
           0,
           0,
           0
@@ -1566,6 +1524,6 @@
         }
       }
     },
-    "timestamp": 1698242754
+    "timestamp": 1698328328
   }
 }

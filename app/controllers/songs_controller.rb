@@ -5,9 +5,11 @@ class SongsController < ApplicationController
   before_action :check_song_owner, only: [:update, :destroy]
   
   def index
+    # byebug
     songs = songs_per_page
     if songs.present?
       if @current_user.user_type == 'Artist'
+        # byebug
         followed_ids = @current_user.followers.pluck(:id)
         songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
       elsif @current_user.user_type == 'Listener'
@@ -23,7 +25,7 @@ class SongsController < ApplicationController
   def show
     @song.increment!(:play_count)
     @current_user.recentyly_playeds.create(song_id: @song.id)
-  
+    
     if @song.status == 'public' || @current_user.followees.include?(@song.artist)
       render json: @song
     else
@@ -41,7 +43,7 @@ class SongsController < ApplicationController
       render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
     end
   end
-
+  
   def update
     if @song.update(song_params)
       render json: { message: 'Song updated successfully' }

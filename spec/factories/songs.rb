@@ -3,8 +3,12 @@ FactoryBot.define do
     title { Faker::Music::RockBand.name }
     genre { Faker::Music.genre }
     status { ['public', 'private'].sample }
-    association :artist, factory: :user, user_type: 'Artist'
-    association :album
+    album
+    user_id { FactoryBot.create(:artist).id }
+    # album_id { FactoryBot.create(:album).id }
+    # association :artist, factory: :user, user_type: 'Artist'
+    # association :album  # explicit assosiation
+    # album # implicit assosiation
 
     trait :with_file do
       after :build do |song|

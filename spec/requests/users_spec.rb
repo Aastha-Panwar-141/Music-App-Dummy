@@ -50,11 +50,13 @@ RSpec.describe "Users", type: :request do
   
   describe 'POST #create' do
     it 'creates a new user' do
-      post '/users', params: { username: "Aastha", email: "aastha@gmail.com", password: "admin@123", user_type: 'Artist' }
+      post '/users', 
+      params: { username: "Aastha", email: "aastha@gmail.com", password: "admin@123", user_type: 'Artist' }
       expect(response).to have_http_status(:created)
     end
     it 'failed to create a new user' do
-      post "/users", params: { username: nil }
+      post "/users", 
+      params: { username: nil }
       expect(response).to have_http_status(:unprocessable_entity)
     end
   end
@@ -67,11 +69,17 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status(:ok)
     end
     it 'failed to update user' do
-      no_user_id = 123456789
-      put "/users/#{no_user_id}/update_details",
+      put "/users/#{user.id}/update_details", 
+      params: { title: '' },
       headers: { 'Authorization' => "Bearer #{valid_jwt}" }
       expect(response).to have_http_status(:unprocessable_entity)
     end
+    # it 'failed to update user' do
+    #   no_user_id = 123456789
+    #   put "/users/#{no_user_id}/update_details",
+    #   headers: { 'Authorization' => "Bearer #{valid_jwt}" }
+    #   expect(response).to have_http_status(:unprocessable_entity)
+    # end
     it 'check owner' do
       another_user = FactoryBot.create(:user)
       put "/users/#{another_user.id}/update_details", 

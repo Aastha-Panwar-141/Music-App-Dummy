@@ -3,7 +3,7 @@ class Playlist < ApplicationRecord
   has_many :playlist_songs, dependent: :destroy
   has_many :songs, through: :playlist_songs, dependent: :destroy
   
-  accepts_nested_attributes_for :songs
+  # accepts_nested_attributes_for :songs
 
   validates :title, presence: true, uniqueness: true
 end

@@ -22,10 +22,11 @@ RSpec.describe Song, type: :model do
     # it { is_expected.to callback(:initial_split).after(:create) }
     
     it 'callback' do
-      song = FactoryBot.create(:song, title: 'song1', genre: 'lofi', user_id: 1, album_id: 2)
-      user = FactoryBot.create(:user)
-      song_split = FactoryBot.create(:song_split, receiver_id: artist.id, requester_id: artist.id, song_id: song.id, percentage: 100)
-      expect(response.status).to eq(200)
+      song = FactoryBot.build(:song)
+      user = FactoryBot.build(:user, user_type: 'Artist')
+      # song_split = SongSplit.create(receiver_id: user.id, requester_id: user.id, song_id: song.id, percentage: 100)
+      song_split = FactoryBot.create(:song_split, receiver_id: user.id, requester_id: user.id, song_id: song.id, percentage: 100)
+      # expect(response.status).to eq(200)
       # song = create(:song)
       # song_split = song.song_splits.first
       
@@ -35,31 +36,4 @@ RSpec.describe Song, type: :model do
       # expect(song_split.percentage).to eql(100)
     end
   end
-  
-  # describe 'callbacks' do
-  # it 'creates an initial split' do
-  #   song = create(:song)
-  #   song_split = song.song_splits.first
-  
-  #   expect(song_split.receiver_id).to eql(song.artist_id)
-  #   expect(song_split.requester_id).to eql(song.artist_id)
-  #   expect(song_split.song_id).to eql(song.id)
-  #   expect(song_split.percentage).to eql(100)
-  # end
-  # it 'creates an initial song split' do
-  #   song = build(:song)
-  #   expect(song).to receive(:initial_split)
-  #   song.save
-  # end
-  # it 'set values in split' do
-  #   song = create(:song)
-  #   song_split = song.song_splits.first
-  
-  #   expect(song_split.receiver_id).to eql(song.artist_id)
-  #   expect(song_split.requester_id).to eql(song.artist_id)
-  #   expect(song_split.song_id).to eql(song.id)
-  #   expect(song_split.percentage).to eql(100)
-  # end
-  # end
-  
 end

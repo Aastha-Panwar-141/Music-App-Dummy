@@ -68,8 +68,5 @@ group :development do
 end
 
 gem "simplecov", require: false, group: :test
-# group :test do
-#   gem 'shoulda-callback-matchers', '~> 1.1.1'
-# end
 
 

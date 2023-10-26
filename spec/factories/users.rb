@@ -1,7 +1,6 @@
 require 'faker'
 
 FactoryBot.define do
-  # byebug
   factory :user do
     # byebug
     username      { Faker::Name.name }
