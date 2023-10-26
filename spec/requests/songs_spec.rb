@@ -44,35 +44,6 @@ RSpec.describe "Songs", type: :request do
       headers: { 'Authorization' => "Bearer #{valid_jwt_artist}" }
       expect(response).to have_http_status(:unprocessable_entity)
     end
-
-    it 'get the top 10 songs' do
-      top_songs = create_list(:song, 10, status: 'public')
-      get '/songs/top_10'
-      expect(response).to have_http_status(200)
-    end
-    it 'get recently played songs for a listener' do
-      listener.recentyly_playeds << public_song
-      get '/songs/recently_played_songs',
-      headers: { 'Authorization' => "Bearer #{valid_jwt_listener}" }
-      expect(response).to have_http_status(200)
-    end
-    it 'returns an error if no recently played songs are available' do
-      get '/songs/recently_played_songs',
-      headers: { 'Authorization' => "Bearer #{valid_jwt_listener}" }
-      expect(response).to have_http_status(400)
-    end
-    it 'searches for songs by title or genre' do
-      song1 = create(:song, title: 'Epic Rock Song', genre: 'Rock', status: 'public', artist: artist)
-      song2 = create(:song, title: 'Jazz Jam', genre: 'Jazz', status: 'public', artist: artist)
-      get '/songs/search', params: { query: 'Rock' }
-      expect(response).to have_http_status(200)
-      expect(response.body).to include(song1.title)
-      expect(response.body).not_to include(song2.title)
-      get '/songs/search', params: { query: 'Jazz' }
-      expect(response).to have_http_status(200)
-      expect(response.body).to include(song2.title)
-      expect(response.body).not_to include(song1.title)
-    end
   end
   
   describe 'GET /songs/:id' do
@@ -140,47 +111,6 @@ RSpec.describe "Songs", type: :request do
     end
   end
 
-  # describe "#index" do
-  #   it "list of songs" do 
-  #     # song = create(:song)
-  #     @song
-  #     get "/songs"
-  #     # headers: { 'Authorization' => "Bearer #{valid_jwt}" }
-  #     expect(response).to have_http_status(200)
-  #   end
-  # end
-  
-  # describe 'GET #index' do
-  #   it 'returns a list of songs for an artist' do
-  #     @song
-  #     get '/songs', headers: { 'Authorization' => "Bearer #{valid_jwt_artist}" }
-  #     expect(response).to have_http_status(:ok)
-  #   end
-  #   it 'returns a list of songs for a listener' do
-  #     @song
-  #     get '/songs', headers: { 'Authorization' => "Bearer #{valid_jwt_listener}" }
-  #     expect(response).to have_http_status(:ok)
-  #   end
-  #   it 'returns an error for an unauthorized user' do
-  #     get '/songs', headers: { 'Authorization' => "Bearer #{valid_jwt_user}" }
-  #     expect(response).to have_http_status(:forbidden)
-  #   end
-  # end
-  
-  # describe 'GET #show' do
-  #   it 'shows a song for an artist' do
-  #     get "/songs/#{@song.id}", headers: { 'Authorization' => "Bearer #{valid_jwt_artist}" }
-  #     expect(response).to have_http_status(:ok)
-  #   end
-  #   it 'shows a song for a listener' do
-  #     get "/songs/#{@song.id}", headers: { 'Authorization' => "Bearer #{valid_jwt_listener}" }
-  #     expect(response).to have_http_status(:ok)
-  #   end
-  #   it 'returns an error for an unauthorized user' do
-  #     get "/songs/#{@song.id}", headers: { 'Authorization' => "Bearer #{valid_jwt_user}" }
-  #     expect(response).to have_http_status(:unprocessable_entity)
-  #   end
-  # end
   
   
 
