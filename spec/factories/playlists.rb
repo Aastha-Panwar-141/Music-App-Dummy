@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :playlist do
-    title { "Playlist 1" }
+    sequence(:title) { |n| "Playlist #{n}"}
+    # title { "Playlist 2" }
     user_id { FactoryBot.create(:listener).id }
   end
 end

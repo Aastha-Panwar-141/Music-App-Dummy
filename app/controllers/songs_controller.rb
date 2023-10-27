@@ -53,7 +53,7 @@ class SongsController < ApplicationController
   end
   
   def destroy
-    byebug
+    # byebug
     if @song.destroy
       render json: { message: 'Song deleted successfully' }
     else
@@ -96,9 +96,9 @@ class SongsController < ApplicationController
   def recently_played_songs
     recently_played_songs = @current_user.recentyly_playeds
     if recently_played_songs.present?
-      render json: recently_played_songs
+      render json: recently_played_songs, status: :ok
     else
-      render json: { message: "There is no recently played song" }, status: 400
+      render json: { message: "There is no recently played song" }, status: :bad_request
     end
   end
   

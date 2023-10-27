@@ -45,7 +45,6 @@ class SongRequestsController < ApplicationController
   end
   
   def accept
-    byebug
     requester = @song_request.requester
     receiver = @song_request.receiver
     requested_percent = @song_request.requested_percent
@@ -75,17 +74,15 @@ class SongRequestsController < ApplicationController
   end
 
   def all_sent_requests
-    # byebug
     if @current_user.song_sent_requests.present?
       @sent_requests = @current_user.song_sent_requests
       render json: @sent_requests
     else
-      render json: {error: "You have no sent request!"}
+      render json: {error: "You have no sent request!"}, status: :unprocessable_entity
     end
   end
 
   def all_accepted_request
-    # byebug
     if @current_user.song_sent_requests.present?
       @sent_requests = @current_user.song_sent_requests
       purchased_splits = @sent_requests.where(status: 'accepted')

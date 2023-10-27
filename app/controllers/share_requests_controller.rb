@@ -111,17 +111,11 @@ class ShareRequestsController < ApplicationController
       render json: {error: "You have no sent request!"}
     end
   end
-
-  # def schedule_request
-  #   ShareTransferWorker.perform_at(5.minute.from_now, '')
-  #   render json: "request transfered!"
-  # end
   
   private
   
   def find_request
     begin
-      # byebug
       @share_request = ShareRequest.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       render json: {result: "No share request found for given id."}, status: :unprocessable_entity 

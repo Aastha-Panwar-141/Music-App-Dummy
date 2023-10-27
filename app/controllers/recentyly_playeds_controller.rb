@@ -1,3 +1,0 @@
-class RecentylyPlayedsController < ApplicationController
-
-end

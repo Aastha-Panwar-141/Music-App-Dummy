@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :song do
-    title { Faker::Music::RockBand.name }
+    sequence(:title) { |n| "Song #{n}" }
+    # title { Faker::Music::RockBand.unique.name }
     genre { Faker::Music.genre }
     status { ['public', 'private'].sample }
     album

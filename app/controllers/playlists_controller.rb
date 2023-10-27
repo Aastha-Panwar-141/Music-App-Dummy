@@ -6,11 +6,11 @@ class PlaylistsController < ApplicationController
   
   def index
     playlists = Playlist.all
-    # if playlists.present?
-    render json: playlists
-    # else
-    # render json: {error: "There is no playlist available!"}, status: :unprocessable_entity
-    # end
+    if playlists.present?
+      render json: playlists
+    else
+      render json: {error: "There is no playlist available!"}, status: :unprocessable_entity
+    end
   end
   
   def show
@@ -28,7 +28,7 @@ class PlaylistsController < ApplicationController
       if song.present?
         @playlist.songs << song
       else
-        render json: {error: "No song is available for give id!"}, status: :unprocessable_entity
+        render json: {error: "No song is available for given id!"}, status: :unprocessable_entity
       end
       render json: { message: 'Playlist created successfully' }, status: :created
     else
@@ -38,7 +38,7 @@ class PlaylistsController < ApplicationController
   
   def update
     if @playlist.update(playlist_params)
-      render json: { message: 'Playlist updated successfully' }
+      render json: { message: 'Playlist updated successfully' }, status: :ok
     else
       render json: { error: @playlist.errors.full_messages }, status: :unprocessable_entity
     end
@@ -95,7 +95,7 @@ class PlaylistsController < ApplicationController
     begin
       @song = Song.find(params[:song_id])
     rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No song found for given id.'}
+      render json: {error: 'No song found for given id.'}, status: :unprocessable_entity
     end
   end
   
@@ -105,7 +105,7 @@ class PlaylistsController < ApplicationController
   
   def check_playlist_owner
     unless playlist_owner?(@playlist)
-      render json: {error: "You don't have permission for this action!"}, status: :unprocessable_entity
+      render json: {error: "You don't have permission for this action!"}, status: :unauthorized
     end
   end
   

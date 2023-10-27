@@ -1,10 +1,7 @@
 FactoryBot.define do
-  factory :song_split do
+  factory :split do
     association :requester, factory: :user
     association :receiver, factory: :user
     percentage { 100 }
-    # association :artist, factory: :user, user_type: 'Artist'
-    association :song, factory: :song
-    
   end
 end
