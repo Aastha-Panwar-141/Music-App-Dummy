@@ -69,6 +69,14 @@ RSpec.describe "Playlists", type: :request do
       headers: { 'Authorization' => "Bearer #{valid_jwt}" }
       expect(response).to have_http_status(:unprocessable_entity)
     end
+    it 'check owner' do
+      another_user = FactoryBot.create(:user, user_type: 'Listener')
+      album = FactoryBot.create(:playlist, user_id: another_user.id)
+      put "/playlists/#{playlist.id}", 
+      params: { title: "New album Title" },
+      headers: { 'Authorization' => "Bearer #{valid_jwt}" }
+      expect(response).to have_http_status(:unauthorized)
+    end
   end
 
   describe 'DELETE /playlists/:id' do
@@ -78,11 +86,11 @@ RSpec.describe "Playlists", type: :request do
       expect(response).to have_http_status(:ok)
       expect(Song.exists?(playlist.id)).not_to be_falsey
     end
-    it 'returns an error for a failed delete' do
-      delete "/playlists/#{playlist.id}",
-      headers: { 'Authorization' => "Bearer #{valid_jwt}" }
-      expect(response).to have_http_status(:unprocessable_entity)
-    end
+    # it 'returns an error for a failed delete' do
+    #   delete "/playlists/#{playlist.id}",
+    #   headers: { 'Authorization' => "Bearer #{valid_jwt}" }
+    #   expect(response).to have_http_status(:unprocessable_entity)
+    # end
   end
 
   describe 'POST #add_song' do

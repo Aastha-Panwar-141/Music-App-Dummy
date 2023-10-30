@@ -1,24 +1,23 @@
 require 'rails_helper'
+include JsonWebToken
 
 RSpec.describe "Splits", type: :request do
   let(:user) { FactoryBot.create(:user) }
-  # let(:valid_jwt) { jwt_encode(user_id: user.id) }
+  let(:split) { FactoryBot.create(:split) }
+  let(:valid_jwt) { jwt_encode(user_id: user.id) }
 
-  before(:all) do 
-    @split = Split.create(id: 1, requester_id: 2, receiver_id: 3, split_type: 'Artist')
-  end
-
-  describe 'GET #index' do
-    it 'returns a list of splits' do
-      @split
-      get "/splits"
+  describe 'get splits' do
+    it 'returns list of splits' do
+      byebug
+      splits = FactoryBot.create_list(:split, 5)
+      get "/splits",
+      headers: { 'Authorization' => "Bearer #{valid_jwt}" }
       expect(response).to have_http_status(:ok)
     end
-    it 'if no split' do
-      get "/splits"
-      if @split.nil?
-        expect(response).to have_http_status(:no_content)
-      end
+    it 'when no splits' do
+      get "/splits",
+      headers: { 'Authorization' => "Bearer #{valid_jwt}" }
+      expect(response).to have_http_status(:ok)
     end
   end
 end

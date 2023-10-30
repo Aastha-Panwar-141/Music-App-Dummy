@@ -34,6 +34,7 @@ class ShareRequestsController < ApplicationController
   end
   
   def accept
+    # byebug
     requester = @share_request.requester
     receiver = @share_request.receiver
     requested_percent = @share_request.requested_percent
@@ -57,7 +58,7 @@ class ShareRequestsController < ApplicationController
   def reject
     @share_request.status = 'rejected'
     if @share_request.save
-      render json: { message: 'Request rejected' }
+      render json: { message: 'Request rejected' }, status: :ok
     else
       render json: { error: 'Failed to reject share request!' }, status: :unprocessable_entity
     end
@@ -130,13 +131,13 @@ class ShareRequestsController < ApplicationController
     end
   end
   
-  def find_receiver_artist
-    begin
-      @receiving_artist = User.find(params[:receiver_id])
-    rescue ActiveRecord::RecordNotFound
-      render json: {result: "No receiving artist found for given id."}, status: :unprocessable_entity 
-    end
-  end 
+  # def find_receiver_artist
+  #   begin
+  #     @receiving_artist = User.find(params[:receiver_id])
+  #   rescue ActiveRecord::RecordNotFound
+  #     render json: {result: "No receiving artist found for given id."}, status: :unprocessable_entity 
+  #   end
+  # end 
   
   def request_owner?(share_request)
     @share_request.receiver_id == @current_user.id
@@ -153,10 +154,6 @@ class ShareRequestsController < ApplicationController
       render json: "Request is not pending"
     end
   end
-  
-  # def share_params
-  #   params.permit(:receiver_id, :requested_percent, :price, :request_type, :split_id)
-  # end
   
   def request_params
     params.permit(:price, :requested_percent, :split_id)

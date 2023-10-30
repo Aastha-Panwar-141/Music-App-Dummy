@@ -47,6 +47,4 @@ class PasswordsController < ApplicationController
       render json: {errors: current_user.errors.full_messages}, status: :unprocessable_entity
     end
   end
-  
-  
 end

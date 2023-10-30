@@ -22,8 +22,8 @@ RSpec.describe Song, type: :model do
     # it { is_expected.to callback(:initial_split).after(:create) }
     
     it 'callback' do
-      song = FactoryBot.build(:song)
-      user = FactoryBot.build(:user, user_type: 'Artist')
+      song = FactoryBot.create(:song)
+      user = FactoryBot.create(:user, user_type: 'Artist')
       # song_split = SongSplit.create(receiver_id: user.id, requester_id: user.id, song_id: song.id, percentage: 100)
       song_split = FactoryBot.create(:song_split, receiver_id: user.id, requester_id: user.id, song_id: song.id, percentage: 100)
       # expect(response.status).to eq(200)

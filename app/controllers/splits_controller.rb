@@ -1,6 +1,7 @@
 class SplitsController < ApplicationController
 
   def index
+    # byebug
     splits = Split.all
     if splits.present?
       render json: splits

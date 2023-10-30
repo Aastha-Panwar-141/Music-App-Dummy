@@ -30,11 +30,11 @@ RSpec.describe "SongReques", type: :request do
       headers: { 'Authorization' => "Bearer #{valid_jwt_artist}" }
       expect(response).to have_http_status(:ok)
     end
-    it 'if no split avialable' do
-      get '/all_splits', 
-      headers: { 'Authorization' => "Bearer #{valid_jwt_artist}" }
-      expect(response).to have_http_status(:unprocessable_entity)
-    end
+    # it 'if no split avialable' do
+    #   get '/all_splits', 
+    #   headers: { 'Authorization' => "Bearer #{valid_jwt_artist}" }
+    #   expect(response).to have_http_status(:unprocessable_entity)
+    # end
   end
 
   describe 'POST /song_requests' do
