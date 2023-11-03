@@ -1,5 +1,6 @@
 class FollowsController < ApplicationController
   before_action :find_user, only: [:follow, :unfollow]
+  before_action :already_follows, only: [:follow, :unfollow]
   
   def follow
     # byebug
