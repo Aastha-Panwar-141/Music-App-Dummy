@@ -1,5 +1,5 @@
 class PasswordsController < ApplicationController
-  skip_before_action :authenticate_request
+  # skip_before_action :authenticate_request
   
   def forgot
     return render json: {error: "Email not present"} unless params[:email].present?

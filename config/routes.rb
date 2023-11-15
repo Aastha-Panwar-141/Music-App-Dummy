@@ -2,8 +2,14 @@ require 'sidekiq/web'
 require 'sidekiq/cron/web'
 
 Rails.application.routes.draw do
+  devise_for :users
+  get 'welcomes/index'
   mount Sidekiq::Web => "/sidekiq"
-  
+  root 'welcomes#index'
+  get 'users/index'
+
+  # get "/articles", to: "articles#index"
+
   resources :users, only: [:index, :create] do
     member do
       put 'update_details', to: 'users#update'
@@ -105,5 +111,5 @@ Rails.application.routes.draw do
   post 'password/forgot', to: 'passwords#forgot'
   post 'password/reset', to: 'passwords#reset'
   put 'password/update', to: 'passwords#update'
-  
+
 end

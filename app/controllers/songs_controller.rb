@@ -1,15 +1,41 @@
 class SongsController < ApplicationController
+  # skip_before_action :authenticate_request, only: [:index, :show]
   before_action :find_song, only: [:update, :destroy, :show]
   before_action :validate_artist, only: [:create]
   before_action :validate_listener, only: [:recently_played_songs]
   before_action :check_song_owner, only: [:update, :destroy]
   
+
+  # def index 
+  #   @songs = Song.all
+  # end
+  
+  # def show
+  #   @songs = Song.find(params[:id])
+  # end
+  
+  def new
+    @songs = Song.new
+  end
+  
+  def edit
+  end
+
+  # def create
+  #   @song = Song.new(title: "...", genre: "...")
+  #   # @song = Song.new(song_params)
+
+  #   if @song.save
+  #     redirect_to @song
+  #   else
+  #     render :new, status: :unprocessable_entity
+  #   end
+  # end
+
   def index
-    # byebug
     songs = songs_per_page
     if songs.present?
       if @current_user.user_type == 'Artist'
-        # byebug
         followed_ids = @current_user.followers.pluck(:id)
         songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
       elsif @current_user.user_type == 'Listener'
@@ -33,7 +59,7 @@ class SongsController < ApplicationController
     end
     
   end
-  
+
   def create
     @song = @current_user.songs.new(song_params)
     if @song.save
@@ -53,7 +79,6 @@ class SongsController < ApplicationController
   end
   
   def destroy
-    # byebug
     if @song.destroy
       render json: { message: 'Song deleted successfully' }
     else

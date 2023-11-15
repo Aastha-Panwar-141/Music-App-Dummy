@@ -23,11 +23,12 @@ gem "active_model_serializers"
 gem "sidekiq-cron"
 gem "sidekiq", '~> 6.5.9'
 gem "redis", '~> 4.8.1'
-
+gem "cssbundling-rails"
+gem 'bootstrap'
 # gem 'sinatra' #for web-ui
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
+# gem 'bcrypt', '~> 3.1.7'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -70,3 +71,5 @@ end
 gem "simplecov", require: false, group: :test
 
 
+
+gem "devise", "~> 4.9"

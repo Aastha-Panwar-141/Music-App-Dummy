@@ -1,0 +1,20 @@
+<h1>New song</h1>
+
+<%= form_with model: @song do |form| %>
+  <div>
+  <%= form.label :title %><br>
+  <%= form.text_field :title %>
+  <% @song.errors.full_messages_for(:title).each do |message| %>
+    <div><%= message %></div>
+  </div>
+  <div>
+  <%= form.label :genre %><br>
+  <%= form.text_field :genre %>
+  <% @song.errors.full_messages_for(:genre).each do |message| %>
+    <div><%= message %></div>
+  </div>
+  <div>
+  <%= form.submit %>
+  </div>
+<% end %>
+

@@ -1,12 +1,21 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create, :login]  
+  # skip_before_action :authenticate_request, only: [:create, :login, :new, :index]  
   before_action :find_user, only: %i[update destroy recommended_genre]
   before_action :check_owner, only: [:update, :destroy]
   
   def index
+    users = User.all
     render json: User.all, status: :ok
   end
   
+  def new 
+    user = User.new #same as defining an object
+  end
+
+  def show
+    user = User.find_by_id(params[:id])
+  end
+
   def artists
     artists = Artist.all
     if artists.present?
@@ -26,6 +35,7 @@ class UsersController < ApplicationController
   end
   
   def create
+    # byebug 
     @user = User.new(user_params)
     if @user.save
       UserMailer.with(user: @user).welcome_email.deliver_now
