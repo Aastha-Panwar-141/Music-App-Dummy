@@ -3,9 +3,15 @@ require 'sidekiq/cron/web'
 
 Rails.application.routes.draw do
   devise_for :users
+  
+  devise_scope :user do
+    get '/users/sign_out', to: 'devise/sessions#destroy'
+  end
+
   get 'welcomes/index'
   mount Sidekiq::Web => "/sidekiq"
   root 'welcomes#index'
+  # root 'songs#index'
   get 'users/index'
 
   # get "/articles", to: "articles#index"

@@ -2,9 +2,12 @@
 <html>
   <head>
     <title>Music App</title>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <%= favicon_link_tag 'favicon.ico' %>
+    <%= stylesheet_link_tag 'devise_styles', media: 'all' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_tag %>
   </head>
 
@@ -12,5 +15,6 @@
     <% if notice %> <p class="alert alert-success"><%= notice %></p> <% end %>
     <% if alert %> <p class="alert alert-danger"><%= alert %></p> <% end %>
     <%= yield %>
+    <%= link_to "Back", :back, style: 'font-size: 16px' %>
   </body>
 </html>

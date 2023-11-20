@@ -35,14 +35,14 @@ class SongsController < ApplicationController
   def index
     songs = songs_per_page
     if songs.present?
-      if @current_user.user_type == 'Artist'
-        followed_ids = @current_user.followers.pluck(:id)
-        songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
-      elsif @current_user.user_type == 'Listener'
-        followed_ids = @current_user.followees.pluck(:id)
-        songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
+      if current_user.user_type == 'Artist'
+        followed_ids = current_user.followers.pluck(:id)
+        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
+      elsif current_user.user_type == 'Listener'
+        followed_ids = current_user.followees.pluck(:id)
+        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
       end
-      render json: songs
+      # render json: songs
     else
       render json: { error: "No songs available!" }, status: :unprocessable_entity
     end

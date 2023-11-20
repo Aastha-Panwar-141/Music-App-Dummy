@@ -12,6 +12,12 @@ module MusicAppDummy
     config.load_defaults 7.0
     config.autoload_paths << "#{Rails.root}/lib"
 
+    
+    config.assets.enabled = true
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
+    config.assets.precompile += %w( .svg .eot .woff .ttf )
+
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

@@ -72,4 +72,6 @@ gem "simplecov", require: false, group: :test
 
 
 
+# gem 'dartsass-sprockets'
+gem 'sassc-rails'
 gem "devise", "~> 4.9"
