@@ -3,14 +3,68 @@
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
+  background-image: linear-gradient(to right top, #7e72fd, #9868ff, #b359ff, #d041ff, #ed00ff);
+  background-repeat: no-repeat;
+  height: 100vh;
 }
 
 .container {
-  max-width: 400px;
+  max-width: 300px;
   margin: 0 auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+.devise-form {
+  margin-top: 50px;
+}
+.devise .form-container input {
+  font-size: 14px;
+  padding: 5px;
+  border: none;
+  width: 97%;
+  border-bottom: 1px solid #00000047;
+}
+.devise .form-container .field {
+  margin-bottom: 10px;
+}
+.devise .form-container .field label, .devise .form-container .field em {
+  font-size: 14px !important;
+}
+.devise-form h2 {
+  text-align: center;
+  margin: 0px;
+}
+.devise .form-container input:focus {
+  border: none;
+}
+.music-icon {
+  text-align: center;
+}
+.music-icon img {
+  max-width: 50px;
+}
+.devise .form-container input#user_remember_me {
+  width: auto;
+}
+.devise .form-container input[type="submit"] {
+  background-image: linear-gradient(to right top, #7e72fd, #9868ff, #b359ff, #d041ff, #ed00ff);
+  border-radius: 50px;
+  margin-bottom: 5px;
+}
+.devise-form a {
+  font-size: 12px;
+  color: #0000ee;
+}
+.devise .form-container select {
+  padding: 8px 5px;
+  border: none;
+  width: 100%;
+  border-bottom: 1px solid #00000047;
+  background: no-repeat;
+}
+p.alert.alert-success {
+  text-align: center;
+  color: #fff;
+}

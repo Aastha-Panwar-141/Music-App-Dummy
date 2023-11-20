@@ -1,11 +1,11 @@
-<div class="container custom-sign-in-page">
-  <h2>Log in</h2>
-  <div class="image-container">
+<div class="container devise devise-form custom-sign-in-page">
+  <h2>Login</h2>
+  <div class="music-icon">
     <%= image_tag('music_1.png', alt: 'Music Icon') %>
   </div>
   <div class="form-container">
-    <%= render 'devise/shared/error_messages', resource: resource %>
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <%= render 'devise/shared/error_messages', resource: resource %>
       <div class="field">
         <%= f.label :email %><br />
         <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -28,5 +28,5 @@
       </div>
     <% end %>
   </div>
-</div>
 <%= render "devise/shared/links" %>
+</div>

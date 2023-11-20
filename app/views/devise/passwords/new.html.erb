@@ -1,6 +1,10 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+<div class="container devise devise-form custom-sign-in-page">
+  <h2>Forgot your password?</h2>
+  <div class="music-icon">
+    <%= image_tag('music_1.png', alt: 'Music Icon') %>
+  </div>
+  <div class="form-container">
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
@@ -11,6 +15,7 @@
   <div class="actions">
     <%= f.submit "Send me reset password instructions" %>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  <% end %>
+  </div>
+  <%= render "devise/shared/links" %>
+</div>

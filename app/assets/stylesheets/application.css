@@ -1,15 +1,14 @@
 @import 'bootstrap';
+
 .custom-sign-in-page {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  
-  .image-container {
-    margin-right: 20px; /* Adjust spacing as needed */
-  }
-  
-  .form-container {
-    max-width: 400px; /* Adjust the maximum width as needed */
-  }
+  /* height: 100vh; */
+}
+
+.image-container {
+  margin-right: 20px; 
+}
+
+.form-container {
+  max-width: 400px; 
+}
+

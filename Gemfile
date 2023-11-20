@@ -25,6 +25,8 @@ gem "sidekiq", '~> 6.5.9'
 gem "redis", '~> 4.8.1'
 gem "cssbundling-rails"
 gem 'bootstrap'
+gem 'jquery-rails'
+
 # gem 'sinatra' #for web-ui
 
 # Use ActiveModel has_secure_password
