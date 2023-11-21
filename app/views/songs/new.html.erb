@@ -7,6 +7,10 @@
   <% @song.errors.full_messages_for(:title).each do |message| %>
     <div><%= message %></div>
   </div>
+  <div class= "field">
+    <%= form.label :image %><br>
+    <%= form.file_field :image %>
+  </div>
   <div>
   <%= form.label :genre %><br>
   <%= form.text_field :genre %>

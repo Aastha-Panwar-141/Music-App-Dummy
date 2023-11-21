@@ -3,12 +3,12 @@
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
-  background-image: linear-gradient(to right top, #7e72fd, #9868ff, #b359ff, #d041ff, #ed00ff);
+  /* background-image: linear-gradient(to right top, #7e72fd, #9868ff, #b359ff, #d041ff, #ed00ff); */
   background-repeat: no-repeat;
   height: 100vh;
 }
 
-.container {
+.devise-form {
   max-width: 300px;
   margin: 0 auto;
   padding: 20px;
@@ -23,7 +23,7 @@ body {
   font-size: 14px;
   padding: 5px;
   border: none;
-  width: 97%;
+  width: 100%;
   border-bottom: 1px solid #00000047;
 }
 .devise .form-container .field {
@@ -65,6 +65,6 @@ body {
   background: no-repeat;
 }
 p.alert.alert-success {
-  text-align: center;
-  color: #fff;
+  font-size: 14px;
+  padding: 0.3rem 1.25rem;
 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_15_095000) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_21_114404) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -126,6 +126,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_15_095000) do
     t.datetime "updated_at", null: false
     t.integer "play_count", default: 0
     t.string "status", default: "public"
+    t.string "image"
     t.index ["album_id"], name: "index_songs_on_album_id"
     t.index ["user_id"], name: "index_songs_on_user_id"
   end

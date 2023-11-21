@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   get 'welcomes/index'
   mount Sidekiq::Web => "/sidekiq"
-  root 'welcomes#index'
+  root 'songs#index'
   # root 'songs#index'
   get 'users/index'
 

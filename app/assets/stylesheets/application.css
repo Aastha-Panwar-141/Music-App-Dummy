@@ -11,4 +11,12 @@
 .form-container {
   max-width: 400px; 
 }
-
+.songs-container ul {
+  display: flex;
+  list-style: none;
+  justify-content: space-between;
+  padding: 0px;
+}
+.songs-container ul li {
+  box-shadow: 0 0 5px #0000002b;
+}

@@ -1,5 +1,7 @@
 class Song < ApplicationRecord
   has_one_attached :file
+  has_one_attached :image
+  
   belongs_to :artist, foreign_key: 'user_id'
   belongs_to :album
   has_many :playlist_songs, dependent: :destroy

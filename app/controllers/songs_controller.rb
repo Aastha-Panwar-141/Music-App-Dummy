@@ -50,9 +50,9 @@ class SongsController < ApplicationController
   
   def show
     @song.increment!(:play_count)
-    @current_user.recentyly_playeds.create(song_id: @song.id)
+    current_user.recentyly_playeds.create(song_id: @song.id)
     
-    if @song.status == 'public' || @current_user.followees.include?(@song.artist)
+    if @song.status == 'public' || current_user.followees.include?(@song.artist)
       render json: @song
     else
       render json: {error: "This is private song, please follow it's artist to listen this song!"}, status: :unprocessable_entity
@@ -148,7 +148,7 @@ class SongsController < ApplicationController
   end
   
   def song_params
-    params.permit(:title, :genre, :album_id, :status, :file)
+    params.permit(:title, :genre, :album_id, :status, :file, :image)
   end
   
   def validate_artist
