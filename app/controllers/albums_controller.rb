@@ -5,13 +5,17 @@ class AlbumsController < ApplicationController
   before_action :authorize_album_owner, only: [:update, :destroy, :add_song]
 
   def index
-    albums = Album.all
-    if albums.present?
-      render json: albums
+    @albums = Album.all
+    if @albums.present?
+      # render json: albums
     else
       render json: {error: "There is no album present!"}
     end
   end
+
+  def new
+    albums = Album.new
+  end 
   
   def create
     unless params[:song_id].present?
@@ -21,7 +25,7 @@ class AlbumsController < ApplicationController
     # if song_id.nil?
     #   return render json: { error: 'Song not found with the given ID' }, status: :not_found
     # end
-    @album = @current_user.albums.new(album_params)
+    @album = current_user.albums.new(album_params)
     if @album.save
       # song = Song.find_by_id(song_id)
       @album.songs << @song
@@ -70,13 +74,13 @@ class AlbumsController < ApplicationController
   end
 
   def authorize_album_owner
-    unless @album.user_id == @current_user.id
+    unless @album.user_id == current_user.id
       render json: { error: 'You are not authorized to perform this action' }, status: :unauthorized
     end
   end
 
   def validate_artist
-    if @current_user.user_type != 'Artist'
+    if current_user.user_type != 'Artist'
       render json: { error: 'Listener are Not Allowed for this request' }, status: :forbidden
     end
   end 

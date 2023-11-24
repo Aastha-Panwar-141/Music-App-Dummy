@@ -1,0 +1,11 @@
+<div class="container mt-5">
+<h3>Album</h3>
+<div class="form">
+  <%= form_with(model: @album) do |form| %>
+    <%= form.label :title %>
+    <%= form.text_field :name, autofocus: true %>
+    <br/>
+    <%= form.submit 'Submit', class: 'submit' %>
+  <% end %>
+</div>
+</div>

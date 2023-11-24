@@ -5,12 +5,16 @@ class PlaylistsController < ApplicationController
   before_action :validate_listener, only: [:create, :add_song, :merge_playlists]
   
   def index
-    playlists = Playlist.all
-    if playlists.present?
-      render json: playlists
+    @playlists = Playlist.all
+    if @playlists.present?
+      # render json: playlists
     else
       render json: {error: "There is no playlist available!"}, status: :unprocessable_entity
     end
+  end
+
+  def new
+    @playlist = Playlist.new
   end
   
   def show
@@ -22,7 +26,7 @@ class PlaylistsController < ApplicationController
     unless song_id.present?
       return render json: { error: 'Song is required to create a playlist' }, status: :unprocessable_entity
     end
-    @playlist = @current_user.playlists.new(playlist_params)
+    @playlist = current_user.playlists.new(playlist_params)
     if @playlist.save
       song = Song.find_by(song_id)
       if song.present?
@@ -64,8 +68,8 @@ class PlaylistsController < ApplicationController
   def merge_playlists
     playlist1_id = params[:playlist1_id]
     playlist2_id = params[:playlist2_id]
-    playlist1 = @current_user.playlists.find_by(id: playlist1_id)
-    playlist2 = @current_user.playlists.find_by(id: playlist2_id)
+    playlist1 = current_user.playlists.find_by(id: playlist1_id)
+    playlist2 = current_user.playlists.find_by(id: playlist2_id)
     
     unless playlist1.present? && playlist2.present?
       render json: {error: "Playlist not found for given id!"}
@@ -73,7 +77,7 @@ class PlaylistsController < ApplicationController
     
     merge_title = params[:title]
     
-    merged_playlist = @current_user.playlists.create!(title: merge_title)
+    merged_playlist = current_user.playlists.create!(title: merge_title)
     merged_songs = (playlist1.songs + playlist2.songs)
     merged_playlist.songs = merged_songs
     if merged_playlist.save
@@ -100,7 +104,7 @@ class PlaylistsController < ApplicationController
   end
   
   def playlist_owner?(playlist)
-    @playlist.user_id == @current_user.id
+    @playlist.user_id == current_user.id
   end
   
   def check_playlist_owner
@@ -115,7 +119,7 @@ class PlaylistsController < ApplicationController
   
   # check user-type = Listener
   def validate_listener
-    if @current_user.user_type != 'Listener'
+    if current_user.user_type != 'Listener'
       render json: { error: 'Artist are Not Allowed for this request' }, status: :forbidden
     end
   end 

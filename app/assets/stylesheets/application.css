@@ -20,3 +20,6 @@
 .songs-container ul li {
   box-shadow: 0 0 5px #0000002b;
 }
+.music-icon-root {
+  text-align: center;
+}

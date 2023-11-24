@@ -23,16 +23,18 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <%= link_to 'Home', welcomes_index_path, class: 'nav-link' %>
-              <%# <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a> %>
+            </li>
+            <li class="nav-item text-white">
+              <%= link_to "Playlists", playlists_path, class: 'text-white p-3' %>
+            </li>
+            <%# <li class="nav-item"> %>
+              <%# link_to "Artists", artists_users_path, class: 'text-white p-3' %>
+            <%# </li> %>
+            <li class="nav-item">
+              <%= link_to "Songs", songs_path, class: 'text-white p-3' %>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">Playlists</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white" href="#">Artists</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white" href="#">Songs</a>
+              <%= link_to "Albums", albums_path, class: 'text-white p-3' %>
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">

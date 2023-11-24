@@ -1,24 +1,31 @@
-<h1>New song</h1>
 
+<div class = "container mt-4">
+<h1>New song</h1>
 <%= form_with model: @song do |form| %>
   <div>
-  <%= form.label :title %><br>
-  <%= form.text_field :title %>
-  <% @song.errors.full_messages_for(:title).each do |message| %>
-    <div><%= message %></div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+    <% @song.errors.full_messages_for(:title).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
   </div>
-  <div class= "field">
-    <%= form.label :image %><br>
-    <%= form.file_field :image %>
+  <div class="field">
+    <%= form.label :file %><br>
+    <%= form.file_field :file %>
+  </div>
+  <div class="field">
+    <%= form.label :album_id %><br>
+    <%= form.text_field :album_id %>
   </div>
   <div>
-  <%= form.label :genre %><br>
-  <%= form.text_field :genre %>
-  <% @song.errors.full_messages_for(:genre).each do |message| %>
-    <div><%= message %></div>
+    <%= form.label :genre %><br>
+    <%= form.text_field :genre %>
+    <% @song.errors.full_messages_for(:genre).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
   </div>
   <div>
-  <%= form.submit %>
+    <%= form.submit %>
   </div>
 <% end %>
-
+</div>

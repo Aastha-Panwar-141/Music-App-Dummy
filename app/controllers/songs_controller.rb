@@ -1,4 +1,6 @@
 class SongsController < ApplicationController
+  before_action :authenticate_user!
+
   # skip_before_action :authenticate_request, only: [:index, :show]
   before_action :find_song, only: [:update, :destroy, :show]
   before_action :validate_artist, only: [:create]
@@ -15,7 +17,7 @@ class SongsController < ApplicationController
   # end
   
   def new
-    @songs = Song.new
+    @song = Song.new
   end
   
   def edit
@@ -49,11 +51,12 @@ class SongsController < ApplicationController
   end
   
   def show
+    # byebug
     @song.increment!(:play_count)
     current_user.recentyly_playeds.create(song_id: @song.id)
     
     if @song.status == 'public' || current_user.followees.include?(@song.artist)
-      render json: @song
+      # render json: @song
     else
       render json: {error: "This is private song, please follow it's artist to listen this song!"}, status: :unprocessable_entity
     end
@@ -61,12 +64,15 @@ class SongsController < ApplicationController
   end
 
   def create
-    @song = @current_user.songs.new(song_params)
+    # byebug
+    @song = current_user.songs.new(song_params)
     if @song.save
       @song.file.attach(params[:file])
       render json: { message: 'Song added successfully', song: @song }, status: :created
     else
-      render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
+      flash[:notice] = @song.errors.full_messages
+      render :new
+      # render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
     end
   end
   
@@ -105,7 +111,7 @@ class SongsController < ApplicationController
   end
   
   def my_top_songs
-    songs = @current_user.songs.order(play_count: :desc).limit(3)
+    songs = current_user.songs.order(play_count: :desc).limit(3)
     if songs.present?
       render json: songs, status: 200
     else
@@ -119,7 +125,7 @@ class SongsController < ApplicationController
   end
   
   def recently_played_songs
-    recently_played_songs = @current_user.recentyly_playeds
+    recently_played_songs = current_user.recentyly_playeds
     if recently_played_songs.present?
       render json: recently_played_songs, status: :ok
     else
@@ -138,7 +144,7 @@ class SongsController < ApplicationController
   end
   
   def song_owner?(song)
-    @song.user_id == @current_user.id
+    @song.user_id == current_user.id
   end
   
   def check_song_owner
@@ -148,19 +154,22 @@ class SongsController < ApplicationController
   end
   
   def song_params
-    params.permit(:title, :genre, :album_id, :status, :file, :image)
+    # byebug
+    params.require(:song).permit(:title, :genre, :album_id, :status, :file, :image)
   end
   
   def validate_artist
-    if @current_user.user_type != 'Artist'
+    if current_user.user_type != 'Artist'
       render json: { error: 'Listener are Not Allowed for this request' }, status: :forbidden
     end
   end 
   
   def validate_listener
-    if @current_user.user_type != 'Listener'
+    if current_user.user_type != 'Listener'
       render json: { error: 'Artist are Not Allowed for this request' }, status: :forbidden
     end
   end 
   
 end
+
+
