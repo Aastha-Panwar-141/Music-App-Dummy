@@ -1,11 +1,12 @@
 class AlbumsController < ApplicationController
-  before_action :find_album, only: [:update, :destroy]
-  before_action :find_song, only: [:create]
+  before_action :find_album, only: [:update, :destroy, :edit, :show]
+  # before_action :find_song, only: [:create]
   before_action :validate_artist
   before_action :authorize_album_owner, only: [:update, :destroy, :add_song]
 
   def index
     @albums = Album.all
+    flash.now[:notice] = "We have exactly #{@albums.size} album available."
     if @albums.present?
       # render json: albums
     else
@@ -14,32 +15,51 @@ class AlbumsController < ApplicationController
   end
 
   def new
-    albums = Album.new
+    @albums = Album.new
   end 
   
   def create
-    unless params[:song_id].present?
-      return render json: { error: 'Song ID is required to create a album.' }, status: :unprocessable_entity
-    end
+    # unless params[:song_id].present?
+    #   return render json: { error: 'Song ID is required to create a album.' }, status: :unprocessable_entity
+    # end
     # song_id = Song.find_by_id(params[:song_id])
     # if song_id.nil?
     #   return render json: { error: 'Song not found with the given ID' }, status: :not_found
     # end
     @album = current_user.albums.new(album_params)
     if @album.save
+      redirect_to @album, notice: "Album created successfully"
       # song = Song.find_by_id(song_id)
-      @album.songs << @song
-      render json: { message: 'Album created successfully' }, status: :created
+      # @album.songs << @song
+      # render json: { message: 'Album created successfully' }, status: :created
     else
+      # render :new, alert: "Failed to create album"
+      flash[:notice] = @album.errors.full_messages
       render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
+  def edit
+  end
+
+  def show
+  end
+
+  # def update
+  #   if @car.update(car_params)
+  #     redirect_to(@car)
+  #     else
+  #     render “edit”
+  #   end
+  # end
+  
   def update
     if @album.update(album_params)
-      render json: { message: 'Album updated successfully' }, status: :ok
+      redirect_to @album, notice: "Album updated successfully"
+      # render json: { message: 'Album updated successfully' }, status: :ok
     else
-      render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
+      render "edit"
+      # render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -54,7 +74,7 @@ class AlbumsController < ApplicationController
   private
   
   def album_params
-    params.permit(:title)
+    params.require(:album).permit(:title)
   end
   
   def find_album
@@ -65,13 +85,13 @@ class AlbumsController < ApplicationController
     end
   end
 
-  def find_song
-    begin
-      @song = Song.find(params[:song_id])
-    rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No song found for given id.'}
-    end
-  end
+  # def find_song
+  #   begin
+  #     @song = Song.find(params[:song_id])
+  #   rescue ActiveRecord::RecordNotFound
+  #     render json: {error: 'No song found for given id.'}
+  #   end
+  # end
 
   def authorize_album_owner
     unless @album.user_id == current_user.id

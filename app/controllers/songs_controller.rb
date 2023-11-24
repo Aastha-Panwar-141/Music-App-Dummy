@@ -8,6 +8,34 @@ class SongsController < ApplicationController
   before_action :check_song_owner, only: [:update, :destroy]
   
 
+  def index
+    songs = songs_per_page
+    if songs.present?
+      if current_user.user_type == 'Artist'
+        followed_ids = current_user.followers.pluck(:id)
+        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
+      elsif current_user.user_type == 'Listener'
+        followed_ids = current_user.followees.pluck(:id)
+        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
+      end
+      # render json: songs
+    else
+      render json: { error: "No songs available!" }, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    # byebug
+    @song.increment!(:play_count)
+    current_user.recentyly_playeds.create(song_id: @song.id)
+    
+    if @song.status == 'public' || current_user.followees.include?(@song.artist)
+      # render json: @song
+    else
+      render json: {error: "This is private song, please follow it's artist to listen this song!"}, status: :unprocessable_entity
+    end
+  end
+
   # def index 
   #   @songs = Song.all
   # end
@@ -18,6 +46,19 @@ class SongsController < ApplicationController
   
   def new
     @song = Song.new
+  end
+  
+  def create
+    # byebug
+    @song = current_user.songs.new(song_params)
+    if @song.save
+      @song.file.attach(params[:file])
+      render json: { message: 'Song added successfully', song: @song }, status: :created
+    else
+      flash[:notice] = @song.errors.full_messages
+      render :new
+      # render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
+    end
   end
   
   def edit
@@ -34,47 +75,8 @@ class SongsController < ApplicationController
   #   end
   # end
 
-  def index
-    songs = songs_per_page
-    if songs.present?
-      if current_user.user_type == 'Artist'
-        followed_ids = current_user.followers.pluck(:id)
-        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
-      elsif current_user.user_type == 'Listener'
-        followed_ids = current_user.followees.pluck(:id)
-        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
-      end
-      # render json: songs
-    else
-      render json: { error: "No songs available!" }, status: :unprocessable_entity
-    end
-  end
   
-  def show
-    # byebug
-    @song.increment!(:play_count)
-    current_user.recentyly_playeds.create(song_id: @song.id)
-    
-    if @song.status == 'public' || current_user.followees.include?(@song.artist)
-      # render json: @song
-    else
-      render json: {error: "This is private song, please follow it's artist to listen this song!"}, status: :unprocessable_entity
-    end
-    
-  end
 
-  def create
-    # byebug
-    @song = current_user.songs.new(song_params)
-    if @song.save
-      @song.file.attach(params[:file])
-      render json: { message: 'Song added successfully', song: @song }, status: :created
-    else
-      flash[:notice] = @song.errors.full_messages
-      render :new
-      # render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
   
   def update
     if @song.update(song_params)

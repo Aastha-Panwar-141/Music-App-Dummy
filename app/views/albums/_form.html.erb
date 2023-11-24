@@ -1,0 +1,22 @@
+<%= form_for @albums do |album| %>
+<% if @albums.errors.any? %>
+<div id= "errors">
+<h2>Errors:</h2>
+<ul>
+<% @album.errors.full_messages.each do |message| %>
+<li><%= message %></li>
+<% end %>
+</ul>
+</div>
+<% end %>
+
+<div class="field">
+<%= album.label :title %>
+<%= album.text_field :title %>
+
+</div>
+
+<div class="field">
+<%= album.submit %>
+</div>
+<% end %>
