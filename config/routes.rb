@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   get 'welcomes/index'
   mount Sidekiq::Web => "/sidekiq"
-  root 'songs#index'
+  root 'welcomes#index'
   # root 'songs#index'
   get 'users/index'
 
@@ -43,7 +43,9 @@ Rails.application.routes.draw do
     get 'my_albums', on: :collection
   end
   
-  resources :albums
+  resources :albums do
+    resources :songs
+  end
   
   resources :songs, param: :page, only: [:index]
   

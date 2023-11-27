@@ -1,4 +1,12 @@
 <div class="container mt-4">
-<h1>Showing a album</h1>
-<h4><%= @album.title %></h4>
+<%# <h1>Showing a album</h1> %>
+<h1><%= @album.title %></h1>
+<h5>Songs</h5>
+<ul>
+<% @album.songs.each do |song| %>
+    <li><%= song.title %></li>
+<% end %>
+</ul>
+<%= link_to 'Back', albums_path, class: "btn btn-secondary" %>
+
 </div>

@@ -1,4 +1,20 @@
 <div class = "container songs-container">
+<h4 class = "text-center mt-5">Yours Albums</h4>
+<%= link_to 'Create New Album', new_album_path, class: 'btn btn-primary' %>
+<hr>
+<div class = "album-list mt-3">
+  <% @current_user.albums.each do |album| %>
+  <div class="album">
+  <h4><%= album.title %></h4>
+  <p><%= album.genre %></p>
+  <%= link_to 'View details', albums_path(album) %>
+  <hr>
+  </div>
+  <% end %>
+</div>
+</div>
+
+<div class = "container songs-container">
 <h4 class = "text-center mt-5">All Albums</h4>
 <table>
   <thead>

@@ -1,9 +1,11 @@
 @import 'bootstrap';
 
+.container {
+  margin: 0 auto;
+}
 .custom-sign-in-page {
   /* height: 100vh; */
 }
-
 .image-container {
   margin-right: 20px; 
 }

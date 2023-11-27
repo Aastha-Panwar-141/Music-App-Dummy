@@ -1,31 +1,76 @@
-<%# <div class="music-icon-root"> %>
-    <%# image_tag('music_1.png', alt: 'Music Icon') %>
-<%# </div> %>
-<h1 class="text-center pt-5">Welcomes to Music4U</h1>
+
+
+
+<div class= "container text-center mt-5">
+<h1>Welcome to Music4U</h1>
+<% if current_user %>
+  <!-- Display a personalized greeting for logged-in users -->
+  <p>Hello, <%= current_user.username %>!</p>
+<% else %>
+  <!-- Display a call-to-action for visitors to sign up or log in -->
+  <p>Explore and enjoy your favorite music. Sign up or log in to get started!</p>
+  <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
+  <%= link_to "Log In", new_user_session_path, class: "btn btn-secondary" %>
+<% end %>
+</div>
+
 <p class="text-center pb-2">Music is a great healer. Begin and end your day with Music.</p>
 <div class= "container row d-flex justify-content-center">
-<div class="card col-3 m-1" style="width: 18rem;">
-  <img class="card-img-top w-25" src="/assets/music_1.png" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Albums</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">View more</a>
+  <div class="card col-3 m-1" style="width: 18rem;">
+    <img class="card-img-top w-25" src="/assets/music_1.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Albums</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">View more</a>
+    </div>
+  </div>
+  <div class="card col-3 m-1" style="width: 18rem;">
+    <img class="card-img-top w-25" src="/assets/music_1.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Songs</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">View more</a>
+    </div>
+  </div>
+  <div class="card col-3 m-1" style="width: 18rem;">
+    <img class="card-img-top w-25" src="/assets/music_1.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Playlists</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">View more</a>
+    </div>
   </div>
 </div>
-<div class="card col-3 m-1" style="width: 18rem;">
-  <img class="card-img-top w-25" src="/assets/music_1.png" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Songs</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">View more</a>
-  </div>
+<hr>
+<h2>Featured Songs</h2>
+<div class="song-list">
+  <% @songs.each do |song| %>
+    <div class="song">
+      <%= link_to song.title, song_path(song) %>
+      <!-- Add more details as needed, e.g., artist, genre, etc. -->
+    </div>
+  <% end %>
 </div>
-<div class="card col-3 m-1" style="width: 18rem;">
-  <img class="card-img-top w-25" src="/assets/music_1.png" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">Playlists</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">View more</a>
-  </div>
+<h2>Popular Playlists</h2>
+<div class="playlist-list">
+  <% @playlists.each do |playlist| %>
+    <div class="playlist">
+      <%= link_to playlist.title, playlist_path(playlist) %>
+      <!-- Add more details as needed, e.g., creator, description, etc. -->
+    </div>
+  <% end %>
 </div>
+<h2>Latest Albums</h2>
+<div class="album-list">
+  <% @albums.each do |album| %>
+    <div class="album">
+      <%= link_to album.title, album_path(album) %>
+      <!-- Add more details as needed, e.g., artist, release date, etc. -->
+    </div>
+  <% end %>
 </div>
+
+
+
+
+

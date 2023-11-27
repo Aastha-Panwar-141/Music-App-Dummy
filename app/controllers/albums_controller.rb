@@ -6,6 +6,9 @@ class AlbumsController < ApplicationController
 
   def index
     @albums = Album.all
+    byebug
+    @album = Album.find(params[:album_id])
+    @songs = @album.songs
     flash.now[:notice] = "We have exactly #{@albums.size} album available."
     if @albums.present?
       # render json: albums

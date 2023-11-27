@@ -36,6 +36,25 @@
             <li class="nav-item">
               <%= link_to "Albums", albums_path, class: 'text-white p-3' %>
             </li>
+            <li class="nav-item">
+              <%= link_to "Artists", artists_users_path, class: 'text-white p-3' %>
+            </li>
+            <li class="nav-item">
+            <% if user_signed_in? %>
+              <%= link_to "Profile", users_path(current_user), class: 'text-white p-3' %>
+            <% end %>
+            </li>
+            <li class="nav-item">
+            <% unless user_signed_in? %>
+              <%= link_to "Sign Up", new_user_registration_path, class: 'text-white p-3' %>
+              <%= link_to "Log In", new_user_session_path, class: 'text-white p-3' %>
+            <% end %>
+            </li>
+            <li class="nav-item">
+            <% if user_signed_in? %>
+              <%= link_to "Log Out", destroy_user_session_path, class: 'text-white p-3' %>
+            <% end %>
+            </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search">
