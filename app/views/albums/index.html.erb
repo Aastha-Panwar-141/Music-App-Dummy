@@ -5,6 +5,9 @@
 <div class = "album-list mt-3">
   <% @current_user.albums.each do |album| %>
   <div class="album">
+  <% if album.album_image.attached? %>
+    <%= image_tag album.album_image, style: 'max-height: 100px' %>
+  <% end %>
   <h4><%= album.title %></h4>
   <p><%= album.genre %></p>
   <%= link_to 'View details', albums_path(album) %>

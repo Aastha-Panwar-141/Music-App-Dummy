@@ -36,12 +36,14 @@
 </ul>
 </div>
 
+<% if false %>
 <%= debug @album %>
-<h1>Songs in <%= @album.title %></h1>
+<h1>Songs in <%= @albums.title %></h1>
 <ul>
 <% @album.songs.each do |song| %>
   <li><%= song.title%></li>
 <% end %>
 </ul>
+<% end %>
 
 <%= link_to 'Back to Albums', albums_path, class: "btn btn-secondary" %>

@@ -1,5 +1,8 @@
 <div class="container mt-4">
 <%# <h1>Showing a album</h1> %>
+<% if @album.album_image.attached? %>
+    <%= image_tag @album.album_image, style: 'max-height: 100px' %>
+<% end %>
 <h1><%= @album.title %></h1>
 <h5>Songs</h5>
 <ul>

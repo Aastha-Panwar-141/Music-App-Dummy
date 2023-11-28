@@ -17,18 +17,18 @@ class UsersController < ApplicationController
   end
 
   def artists
-    artists = Artist.all
-    if artists.present?
-      render json: artists, status: :ok
+    @artists = Artist.all
+    if @artists.present?
+      render json: @artists, status: :ok
     else
       render json: "No Artist available!", status: :unprocessable_entity
     end
   end
   
   def listeners
-    listeners = Listener.all
-    if listeners.present?
-      render json: listeners, status: :ok
+    @listeners = Listener.all
+    if @listeners.present?
+      render json: @listeners, status: :ok
     else
       render json: "No Listener available!", status: :unprocessable_entity
     end

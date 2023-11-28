@@ -6,9 +6,9 @@ class AlbumsController < ApplicationController
 
   def index
     @albums = Album.all
-    byebug
-    @album = Album.find(params[:album_id])
-    @songs = @album.songs
+    # byebug
+    # @album = Album.find(params[:album_id])
+    # @songs = @album.songs
     flash.now[:notice] = "We have exactly #{@albums.size} album available."
     if @albums.present?
       # render json: albums
@@ -68,7 +68,8 @@ class AlbumsController < ApplicationController
 
   def destroy
     if @album.destroy
-      render json: { message: 'Album deleted successfully' }, status: :ok
+      redirect_to albums_path, notice: "Album deleted successfully"
+      # render json: { message: 'Album deleted successfully' }, status: :ok
     else
       render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
     end
@@ -77,7 +78,7 @@ class AlbumsController < ApplicationController
   private
   
   def album_params
-    params.require(:album).permit(:title)
+    params.require(:album).permit(:title, :album_image)
   end
   
   def find_album

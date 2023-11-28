@@ -2,4 +2,7 @@
 <h1>Showing a song</h1>
 <h1><%= @song.title %></h1>
 <p><%= @song.genre %></p>
+<% if @song.image.attached? %>
+    <%= image_tag @song.image, style: 'max-height: 100px' %>
+<% end %>
 </div>

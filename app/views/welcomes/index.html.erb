@@ -1,13 +1,8 @@
-
-
-
 <div class= "container text-center mt-5">
 <h1>Welcome to Music4U</h1>
 <% if current_user %>
-  <!-- Display a personalized greeting for logged-in users -->
   <p>Hello, <%= current_user.username %>!</p>
 <% else %>
-  <!-- Display a call-to-action for visitors to sign up or log in -->
   <p>Explore and enjoy your favorite music. Sign up or log in to get started!</p>
   <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary" %>
   <%= link_to "Log In", new_user_session_path, class: "btn btn-secondary" %>
@@ -42,12 +37,13 @@
   </div>
 </div>
 <hr>
+
 <h2>Featured Songs</h2>
 <div class="song-list">
+<%# <% byebug %> 
   <% @songs.each do |song| %>
     <div class="song">
       <%= link_to song.title, song_path(song) %>
-      <!-- Add more details as needed, e.g., artist, genre, etc. -->
     </div>
   <% end %>
 </div>
@@ -56,7 +52,6 @@
   <% @playlists.each do |playlist| %>
     <div class="playlist">
       <%= link_to playlist.title, playlist_path(playlist) %>
-      <!-- Add more details as needed, e.g., creator, description, etc. -->
     </div>
   <% end %>
 </div>
@@ -65,7 +60,6 @@
   <% @albums.each do |album| %>
     <div class="album">
       <%= link_to album.title, album_path(album) %>
-      <!-- Add more details as needed, e.g., artist, release date, etc. -->
     </div>
   <% end %>
 </div>

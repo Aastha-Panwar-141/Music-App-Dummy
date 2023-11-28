@@ -8,4 +8,8 @@ class ArtistsController < ApplicationController
   def my_albums
     render json: @current_user&.albums
   end
+
+  def index
+    @artists = Artist.all
+  end
 end
