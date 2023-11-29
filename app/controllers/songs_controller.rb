@@ -49,12 +49,12 @@ class SongsController < ApplicationController
   end
   
   def create
-    # byebug
     @song = current_user.songs.new(song_params)
     if @song.save
       @song.image.attach(params[:image]) if params[:image].present?
       @song.file.attach(params[:file])
-      render json: { message: 'Song added successfully', song: @song }, status: :created
+      redirect_to @song
+      # render json: { message: 'Song added successfully', song: @song }, status: :created
     else
       flash[:notice] = @song.errors.full_messages
       render :new
@@ -65,31 +65,20 @@ class SongsController < ApplicationController
   def edit
   end
 
-  # def create
-  #   @song = Song.new(title: "...", genre: "...")
-  #   # @song = Song.new(song_params)
-
-  #   if @song.save
-  #     redirect_to @song
-  #   else
-  #     render :new, status: :unprocessable_entity
-  #   end
-  # end
-
-  
-
-  
   def update
     if @song.update(song_params)
-      render json: { message: 'Song updated successfully' }
+      redirect_to @song, notice: "Song updated successfully"
+      # render json: { message: 'Song updated successfully' }
     else
-      render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
+      render 'edit'
+      # render json: { error: @song.errors.full_messages }, status: :unprocessable_entity
     end
   end
   
   def destroy
     if @song.destroy
-      render json: { message: 'Song deleted successfully' }
+      redirect_to songs_path, notice: "Song deleted successfully"
+      # render json: { message: 'Song deleted successfully' }
     else
       render json: {error: 'Failed to destroy!'}
     end

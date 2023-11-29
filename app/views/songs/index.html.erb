@@ -1,19 +1,21 @@
 <div class = "container songs-container">
 <h4 class = "text-center mt-5">Yours Songs</h4>
-<%= link_to 'Add New Song', new_song_path, class: 'btn btn-primary' %>
-<hr>
-<div class = "song-list mt-3">
+<div class = "song-list row mt-3  d-flex justify-content-between">
   <% @current_user.songs.each do |song| %>
-  <div class="song">
+  <div class="song text-center shadow p-3 mb-5 bg-white rounded" style="width: 200px"">
   <%# debug song%>
-  <h4><%= song.title %></h4>
+  <h4 class="text-capitalize mt-2"><%= song.title %></h4>
   <p><%= song.genre %></p>
+  <%= link_to "Show", song %>
+  <%= link_to "Edit", edit_song_path(song) %>
+  <%= button_to "Destroy", song_path(song), method: :delete, data:{confirm: 'Are you sure?'} %>
+    
   <%# link_to 'Listen', song.file, class: "btn btn-success" %>
-  <%= link_to 'View details', song_path(song) %>
-  <hr>
+  <%# link_to 'View details', song_path(song) %>
   </div>
   <% end %>
 </div>
+<%= link_to 'Add New Song', new_song_path, class: 'btn btn-primary' %>
 </div>
 
 <div class = "container songs-container">
@@ -24,13 +26,9 @@
     <%= image_tag song:image if song.image.attached? %>
     <p><%= link_to song.title, song %></p>
     <p><%= song.genre %></p>
-    
-    <% if false %>  
-    <a href = "<%= song_path(song)%>">
-    <a href="/songs/<% song.id %>">
-      <%= song.title %>
-    <% end %>
-    
+    <%= link_to "Show", song %>
+    <%= link_to "Edit", edit_song_path(song) %>
+    <%= button_to "Destroy", song_path(song), method: :delete, data:{confirm: 'Are you sure?'} %>
     </li>
   <% end %>
 </ul>

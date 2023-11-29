@@ -18,10 +18,12 @@ class AlbumsController < ApplicationController
   end
 
   def new
-    @albums = Album.new
+    # byebug
+    @album = Album.new
   end 
   
   def create
+    # byebug
     # unless params[:song_id].present?
     #   return render json: { error: 'Song ID is required to create a album.' }, status: :unprocessable_entity
     # end
@@ -38,7 +40,8 @@ class AlbumsController < ApplicationController
     else
       # render :new, alert: "Failed to create album"
       flash[:notice] = @album.errors.full_messages
-      render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
+      render "new"
+      # render json: { error: @album.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
@@ -78,7 +81,7 @@ class AlbumsController < ApplicationController
   private
   
   def album_params
-    params.require(:album).permit(:title, :album_image)
+    params.permit(:title, :album_image)
   end
   
   def find_album

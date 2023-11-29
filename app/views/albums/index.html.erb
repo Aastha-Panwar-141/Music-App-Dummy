@@ -1,22 +1,19 @@
 <div class = "container songs-container">
-<h4 class = "text-center mt-5">Yours Albums</h4>
-<%= link_to 'Create New Album', new_album_path, class: 'btn btn-primary' %>
-<hr>
-<div class = "album-list mt-3">
+<h4 class = "text-center mt-5 mb-5">Yours Albums</h4>
+<div class = "album-list row mt-3 d-flex justify-content-between">
   <% @current_user.albums.each do |album| %>
-  <div class="album">
+  <div class="album text-center shadow p-3 mb-5 bg-white rounded" style="width: 200px">
   <% if album.album_image.attached? %>
     <%= image_tag album.album_image, style: 'max-height: 100px' %>
   <% end %>
-  <h4><%= album.title %></h4>
-  <p><%= album.genre %></p>
-  <%= link_to 'View details', albums_path(album) %>
-  <hr>
+  <h6 class="text-capitalize mt-2"><%= album.title %></h6>
+  <%# link_to 'View details', albums_path(album) %>
+  <%= link_to "View Details", album %>
   </div>
   <% end %>
 </div>
+<%= link_to 'Create New Album', new_album_path, class: 'btn btn-primary' %>
 </div>
-
 <div class = "container songs-container">
 <h4 class = "text-center mt-5">All Albums</h4>
 <table>
@@ -33,7 +30,8 @@
         <td><%= album.title %></td>
         <td><%= link_to "Show", album %></td>
         <td><%= link_to "Edit", edit_album_path(album) %></td>
-        <td><%= link_to "Destroy", album, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></td>
+        <td><%= button_to "Destroy", album_path(album), method: :delete, data:{confirm: 'Are you sure?'} %></td>
+        <td><%# link_to "Destroy", album, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></td>
       </tr>
     <% end %>
   </tbody>
