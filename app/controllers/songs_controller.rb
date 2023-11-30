@@ -52,7 +52,7 @@ class SongsController < ApplicationController
     @song = current_user.songs.new(song_params)
     if @song.save
       @song.image.attach(params[:image]) if params[:image].present?
-      @song.file.attach(params[:file])
+      @song.file.attach(params[:file]) if params[:file].present?
       redirect_to @song
       # render json: { message: 'Song added successfully', song: @song }, status: :created
     else

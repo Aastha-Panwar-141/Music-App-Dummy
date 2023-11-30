@@ -4,17 +4,17 @@ class FollowsController < ApplicationController
   
   def follow
     # byebug
-    if @current_user.user_type == 'Listener' && @user.user_type == 'Listener'
+    if current_user.user_type == 'Listener' && @user.user_type == 'Listener'
       return render json: { error: 'Listeners cannot follow other listeners' }, status: :unprocessable_entity
-    elsif @current_user.id == @user.id
+    elsif current_user.id == @user.id
       return render json: {error: "You can't follow yourself!"}, status: :unprocessable_entity
-    elsif @current_user.user_type == 'Artist' && @user.user_type == 'Listener'
+    elsif current_user.user_type == 'Artist' && @user.user_type == 'Listener'
       return render json: {error: "Artist can't follow a listener!"}, status: :unprocessable_entity
     else
-      if @current_user.followees.include?(@user)
+      if current_user.followees.include?(@user)
         render json: {error: "You are already following this artist!"}
       else
-        @current_user.followees << @user
+        current_user.followees << @user
         render json: @user
       end
     end
@@ -33,8 +33,8 @@ class FollowsController < ApplicationController
   end
   
   def all_followers
-    if @current_user.followers.present?
-      @followers = @current_user.followers
+    if current_user.followers.present?
+      @followers = current_user.followers
       render json: @followers
     else
       render json: {error: "You have no followers!"}
@@ -42,8 +42,8 @@ class FollowsController < ApplicationController
   end
   
   def all_followees
-    if @current_user.followees.present?
-      @followees = @current_user.followees
+    if current_user.followees.present?
+      @followees = current_user.followees
       render json: @followees
     else
       render json: {error: "You have no followees!"}
@@ -54,7 +54,7 @@ class FollowsController < ApplicationController
   private
   
   def already_follows
-    @already_follows = Follow.find_by(follower: @current_user, followee: @user)
+    @already_follows = Follow.find_by(follower: current_user, followee: @user)
   end
   
   def find_user

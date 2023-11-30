@@ -1,7 +1,7 @@
 class AlbumsController < ApplicationController
   before_action :find_album, only: [:update, :destroy, :edit, :show]
   # before_action :find_song, only: [:create]
-  before_action :validate_artist
+  before_action :validate_artist, except: [:index]
   before_action :authorize_album_owner, only: [:update, :destroy, :add_song]
 
   def index

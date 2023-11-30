@@ -1,0 +1,9 @@
+<h1>All listeners</h1>
+<% if @listeners.present? %>
+    <% @listeners.each do |listener| %>
+        <%= link_to listener.username, users_path(listener) %>
+    <%# <p>listener.username</p> %>
+    <% end %>
+    <% else %>
+        <p>No listener available </p>
+<% end %>

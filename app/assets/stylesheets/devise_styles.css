@@ -68,3 +68,9 @@ p.alert.alert-success {
   font-size: 14px;
   padding: 0.3rem 1.25rem;
 }
+#error_explanation h2 {
+  font-size: 12px;
+}
+#error_explanation ul {
+  font-size: 12px;
+}

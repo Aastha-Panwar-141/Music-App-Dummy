@@ -1,8 +1,13 @@
 <div class="container mt-4">
 <h1>Showing a song</h1>
-<h1><%= @song.title %></h1>
+<h4><%= @song.title %></h4>
 <p><%= @song.genre %></p>
 <% if @song.image.attached? %>
     <%= image_tag @song.image, style: 'max-height: 100px' %>
 <% end %>
+<%= link_to 'Play', song_url(@song) %>
+<% if @song.file.attached? %>
+    <%= send_file @song.file %>
+<% end %>
+
 </div>

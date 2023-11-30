@@ -2,9 +2,7 @@
     <div>
     <%= form.label :title %><br>
     <%= form.text_field :title %>
-    <% @song.errors.full_messages_for(:title).each do |message| %>
-        <div><%= message %></div>
-    <% end %>
+    
     </div>
   <div class="field">
     <%= form.label :file %><br>
@@ -21,9 +19,7 @@
   <div>
     <%= form.label :genre %><br>
     <%= form.text_field :genre %>
-    <% @song.errors.full_messages_for(:genre).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
+    
   </div>
   <div class="field">
     <%= form.label "Song Image" %><br>

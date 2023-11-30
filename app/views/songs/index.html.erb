@@ -1,7 +1,8 @@
+<% if current_user.user_type=='Artist' %>
 <div class = "container songs-container">
 <h4 class = "text-center mt-5">Yours Songs</h4>
 <div class = "song-list row mt-3  d-flex justify-content-between">
-  <% @current_user.songs.each do |song| %>
+  <% current_user.songs.each do |song| %>
   <div class="song text-center shadow p-3 mb-5 bg-white rounded" style="width: 200px"">
   <%# debug song%>
   <h4 class="text-capitalize mt-2"><%= song.title %></h4>
@@ -17,6 +18,7 @@
 </div>
 <%= link_to 'Add New Song', new_song_path, class: 'btn btn-primary' %>
 </div>
+<% end %>
 
 <div class = "container songs-container">
 <h4 class = "text-center mt-5">All Songs</h4>
@@ -24,11 +26,16 @@
   <% @songs.each do |song| %>
     <li class="p-3 m-2 rounded w-25">
     <%= image_tag song:image if song.image.attached? %>
+    <%= link_to "Listen", song_url(song) %>
+
+    <%# image_tag song:file if song.file.attached? %>
     <p><%= link_to song.title, song %></p>
     <p><%= song.genre %></p>
     <%= link_to "Show", song %>
+    <% if current_user.user_type=='Artist' %>
     <%= link_to "Edit", edit_song_path(song) %>
     <%= button_to "Destroy", song_path(song), method: :delete, data:{confirm: 'Are you sure?'} %>
+    <% end %>
     </li>
   <% end %>
 </ul>

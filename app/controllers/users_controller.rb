@@ -4,12 +4,14 @@ class UsersController < ApplicationController
   before_action :check_owner, only: [:update, :destroy]
   
   def index
-    users = User.all
-    render json: User.all, status: :ok
+    @users = User.all
+    flash.now[:notice] = "We have exactly #{@users.size} album available."
+
+    # render json: User.all, status: :ok
   end
   
   def new 
-    user = User.new #same as defining an object
+    user = User.new 
   end
 
   def show
@@ -19,7 +21,7 @@ class UsersController < ApplicationController
   def artists
     @artists = Artist.all
     if @artists.present?
-      render json: @artists, status: :ok
+      # render json: @artists, status: :ok
     else
       render json: "No Artist available!", status: :unprocessable_entity
     end
@@ -28,7 +30,7 @@ class UsersController < ApplicationController
   def listeners
     @listeners = Listener.all
     if @listeners.present?
-      render json: @listeners, status: :ok
+      # render json: @listeners, status: :ok
     else
       render json: "No Listener available!", status: :unprocessable_entity
     end

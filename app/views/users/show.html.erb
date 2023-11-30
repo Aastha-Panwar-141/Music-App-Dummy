@@ -1,0 +1,10 @@
+<div class="container mt-4">
+<h1>Showing a user</h1>
+<% if @user.image.attached? %>
+    <%= image_tag @user.image, style: 'max-height: 100px' %>
+<% end %>
+<h1><%= @user.username %></h1>
+<p><%= @user.email %></p>
+<p><%= @user.user_type %></p>
+<p><%= @user.fav_genre %></p>
+</div>
