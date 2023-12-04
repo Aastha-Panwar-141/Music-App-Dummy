@@ -1,0 +1,21 @@
+<div class="container mt-4">
+<h1 class="text-center">Recently Played Songs</h1>
+<% @recently_played_songs.each do |recently_played| %>
+    <p><%= recently_played.song.title %></p>
+    <p><strong>Genre:</strong> <%= recently_played.song.genre %></p>
+<% if recently_played.song.album %>
+  <p><strong>Album:</strong> <%= recently_played.song.album.title %></p>
+<% end %>
+<% if recently_played.song.artist %>
+  <p><strong>Artist:</strong> <%= recently_played.song.artist.username %></p>
+<% end %>
+<p><strong>Status:</strong> <%= recently_played.song.status %></p>
+<p><strong>Play Count:</strong> <%= recently_played.song.play_count %></p>
+<p><%# @song.genre %></p>
+<% if recently_played.song.image.attached? %>
+    <%= image_tag recently_played.song.image, style: 'max-height: 100px' %>
+<% end %>
+<%= link_to 'Play', song_url(recently_played.song) %>
+<hr>
+<% end %>
+</div>

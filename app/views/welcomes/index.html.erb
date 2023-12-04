@@ -19,7 +19,8 @@
     <div class="card-body">
       <h5 class="card-title">Albums</h5>
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">View more</a>
+      <%= link_to "View More", albums_path %>
+      <%# <a href="#" class="btn btn-primary">View more</a> %>
     </div>
   </div>
   <div class="card col-3 m-1" style="width: 18rem;">
@@ -27,7 +28,8 @@
     <div class="card-body">
       <h5 class="card-title">Songs</h5>
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">View more</a>
+      <%= link_to "View More", songs_path %>
+      <%# <a href="#" class="btn btn-primary">View more</a> %>
     </div>
   </div>
   <div class="card col-3 m-1" style="width: 18rem;">
@@ -35,14 +37,16 @@
     <div class="card-body">
       <h5 class="card-title">Playlists</h5>
       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">View more</a>
+      <%= link_to "View More", playlists_path %>
+      <%# <a href="#" class="btn btn-primary">View more</a> %>
     </div>
   </div>
 </div>
 <hr>
 
-<h2>Featured Songs</h2>
-<div class="song-list">
+<div class ="container">
+<h2 class = "text-center">Featured Songs</h2>
+<div class="song-list text-center">
 <%# <% byebug %> 
   <% @songs.each do |song| %>
     <div class="song">
@@ -50,22 +54,32 @@
     </div>
   <% end %>
 </div>
-<h2>Popular Playlists</h2>
-<div class="playlist-list">
+<br><hr>
+</div>
+
+<div class ="container">
+<h2 class = "text-center">Popular Playlists</h2>
+<div class="playlist-list text-center">
   <% @playlists.each do |playlist| %>
     <div class="playlist">
       <%= link_to playlist.title, playlist_path(playlist) %>
     </div>
   <% end %>
 </div>
-<h2>Latest Albums</h2>
-<div class="album-list">
+<br><hr>
+</div>
+
+<div class ="container">
+<h2 class = "text-center">Latest Albums</h2>
+<div class="album-list text-center">
   <% @albums.each do |album| %>
     <div class="album">
       <%= link_to album.title, album_path(album) %>
     </div>
   <% end %>
 </div>
+</div>
+<br>
 
 
 

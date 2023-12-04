@@ -1,0 +1,22 @@
+<div class="container mt-4">
+<%# <h1>Showing a album</h1> %>
+<% if @playlist.present? %>
+<h1 class="">Playlist</h1>
+<% if @playlist.playlist_image.attached? %>
+        <%= image_tag @playlist.playlist_image, style: 'max-height: 100px' %>
+        <% end %>
+<h4><%= @playlist.title %></h4>
+<ul>
+<% @playlist.songs.each do |song| %>
+    <% if song.present? %>
+    <h5>Playlist's Songs</h5>
+    <li><%= link_to song.title, song_path(song) %></li>
+    <% else %>
+    <p> No song is available in this playlist.</p>
+    <% end %>
+<% end %>
+</ul>
+<%= link_to 'Edit', edit_playlist_path(@playlist) %><br>
+<% end %>
+<%= link_to 'Back', playlist_path, class: "btn btn-secondary" %>
+</div>

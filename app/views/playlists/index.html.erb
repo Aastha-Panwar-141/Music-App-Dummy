@@ -1,9 +1,14 @@
-<div class = "container songs-container">
+<div class = "container container-table songs-container">
 <h4 class = "text-center mt-5">All Playlist</h4>
+<br>
 <table>
   <thead>
     <tr>
+      <th>Image</th>
       <th>Title</th>
+      <th>View Playlist</th>
+      <th>Edit Playlist</th>
+      <th>Delete Playlist</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -11,12 +16,22 @@
   <tbody>
     <% @playlists.each do |playlist| %>
       <tr>
+        <td>
+        <% if playlist.playlist_image.attached? %>
+        <%= image_tag playlist.playlist_image, style: 'max-height: 40px' %>
+        <% end %>
+        </td>
         <td><%= playlist.title %></td>
         <td><%= link_to "Show", playlist %></td>
-        <td><%= link_to "Edit", edit_playlist_path(playlist) %></td>
-        <td><%= link_to "Destroy", playlist, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></td>
-      </tr>
+        <td><%= link_to "Edit", edit_playlist_path(playlist) %></td>      
+          <td><%= button_to "Destroy", playlist, method: :delete, data: {
+                    turbo_confirm: "Are you sure?"
+                  } %></td>
+        
+
     <% end %>
   </tbody>
 </table>
+
+<%= link_to 'New Playlist', new_playlist_path, class: "btn btn-primary mt-3" %>
 </div>

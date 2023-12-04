@@ -31,9 +31,11 @@
     <% @albums.each do |album| %>
       <tr>
         <td><%= album.title %></td>
-        <td><%= link_to "Show", album %></td>
+        <td><%= link_to "View Album", album %></td>
+        <% if current_user.user_type == 'Artist' %>
         <td><%= link_to "Edit", edit_album_path(album) %></td>
         <td><%= button_to "Destroy", album_path(album), method: :delete, data:{confirm: 'Are you sure?'} %></td>
+        <% end %>
         <td><%# link_to "Destroy", album, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></td>
       </tr>
     <% end %>

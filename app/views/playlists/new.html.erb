@@ -1,11 +1,5 @@
 <div class="container mt-5">
-<h3>Playlist</h3>
-<div class="form">
-  <%= form_with(model: @playlist) do |form| %>
-    <%= form.label :title %>
-    <%= form.text_field :name, autofocus: true %>
-    <br/>
-    <%= form.submit 'Submit', class: 'submit' %>
-  <% end %>
-</div>
+<h3>Create a new Playlist</h3>
+<%= render 'form', playlist: @playlist %>
+<%= link_to 'Back', playlists_path, class: "btn btn-secondary mt-3" %>
 </div>

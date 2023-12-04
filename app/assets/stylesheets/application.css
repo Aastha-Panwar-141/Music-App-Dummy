@@ -25,3 +25,6 @@
 .music-icon-root {
   text-align: center;
 }
+.container-table td {
+  width: 170px;
+}

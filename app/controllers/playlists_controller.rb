@@ -1,5 +1,5 @@
 class PlaylistsController < ApplicationController
-  before_action :set_playlist, only: [:show, :update, :destroy, :add_song]
+  before_action :set_playlist, only: [:show, :update, :destroy, :add_song, :edit]
   before_action :find_song, only: [:add_song]
   before_action :check_playlist_owner, only: [:update, :destroy, :add_song]
   before_action :validate_listener, only: [:create, :add_song, :merge_playlists]
@@ -18,11 +18,13 @@ class PlaylistsController < ApplicationController
   end
   
   def show
-    render json: @playlist
+    render
+    # render json: @playlist
   end
   
   def create
-    song_id = params[:song_id]
+    # byebug
+    song_id = params[:playlist][:song_id]
     unless song_id.present?
       return render json: { error: 'Song is required to create a playlist' }, status: :unprocessable_entity
     end
@@ -34,7 +36,9 @@ class PlaylistsController < ApplicationController
       else
         render json: {error: "No song is available for given id!"}, status: :unprocessable_entity
       end
-      render json: { message: 'Playlist created successfully' }, status: :created
+      redirect_to @playlist, notice: "Playlist created successfully"
+
+      # render json: { message: 'Playlist created successfully' }, status: :created
     else
       render json: { error: @playlist.errors.full_messages }, status: :unprocessable_entity
     end
@@ -42,15 +46,33 @@ class PlaylistsController < ApplicationController
   
   def update
     if @playlist.update(playlist_params)
-      render json: { message: 'Playlist updated successfully' }, status: :ok
+      redirect_to @playlist, notice: "Playlist updated successfully"
+      # render json: { message: 'Playlist updated successfully' }, status: :ok
     else
-      render json: { error: @playlist.errors.full_messages }, status: :unprocessable_entity
+      render 'edit'
+      # render json: { error: @playlist.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+  def edit
+  end
   
+  # def destroy
+  #   if 
+  #     respond_to do |format|
+  #       format.html { redirect_to playlists_url, notice: 'Playlist deleted successfully' }
+  #     end
+  #     # redirect_to playlists_path, notice: "Playlist deleted successfully"
+  #     # render json: { message: 'Playlist deleted successfully' }, status: :ok
+  #   else
+  #     render json: {error: 'Failed to delete playlist!'}, status: :unprocessable_entity
+  #   end
+  # end
+
+
   def destroy
     if @playlist.destroy
-      render json: { message: 'Playlist deleted successfully' }, status: :ok
+      redirect_to playlists_path, status: :ok
     else
       render json: {error: 'Failed to delete playlist!'}, status: :unprocessable_entity
     end
@@ -109,12 +131,14 @@ class PlaylistsController < ApplicationController
   
   def check_playlist_owner
     unless playlist_owner?(@playlist)
-      render json: {error: "You don't have permission for this action!"}, status: :unauthorized
+      flash[:notice] = @playlist.errors.full_messages
+      # render json: {error: "You don't have permission for this action!"}, status: :unauthorized
     end
   end
   
   def playlist_params
-    params.permit(:title)
+    # byebug
+    params.require(:playlist).permit(:title, :playlist_image)
   end
   
   # check user-type = Listener

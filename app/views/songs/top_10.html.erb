@@ -1,0 +1,21 @@
+<div class="container mt-4">
+<h1 class="text-center">Top 10 Songs</h1>
+<% @top_songs.each do |song| %>
+    <p><%= song.title %></p>
+    <p><strong>Genre:</strong> <%= song.genre %></p>
+<% if song.album %>
+  <p><strong>Album:</strong> <%= song.album.title %></p>
+<% end %>
+<% if song.artist %>
+  <p><strong>Artist:</strong> <%= song.artist.username %></p>
+<% end %>
+<p><strong>Status:</strong> <%= song.status %></p>
+<p><strong>Play Count:</strong> <%= song.play_count %></p>
+<p><%# @song.genre %></p>
+<% if song.image.attached? %>
+    <%= image_tag song.image, style: 'max-height: 100px' %>
+<% end %>
+<%= link_to 'Play', song_url(song) %>
+<hr>
+<% end %>
+</div>

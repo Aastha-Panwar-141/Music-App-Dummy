@@ -20,18 +20,21 @@
 </div>
 <% end %>
 
-<div class = "container songs-container">
+<div class = "container songs-container pt-5 pb-5">
 <h4 class = "text-center mt-5">All Songs</h4>
-<ul class="mt-3">
+<ul class="row d-flex mt-3 ">
   <% @songs.each do |song| %>
     <li class="p-3 m-2 rounded w-25">
-    <%= image_tag song:image if song.image.attached? %>
-    <%= link_to "Listen", song_url(song) %>
-
+    <% if song.image.attached? %>
+    <%= image_tag song.image, style: 'max-height: 100px' %>
+    <% end %>
+    <%# image_tag song:image if song.image.attached? %>
+    <%# link_to 'Play', url_for(song.file) %>
     <%# image_tag song:file if song.file.attached? %>
     <p><%= link_to song.title, song %></p>
     <p><%= song.genre %></p>
-    <%= link_to "Show", song %>
+    <%= link_to "Listen", song %>
+    <%# link_to "Listen", song_url(song) %>
     <% if current_user.user_type=='Artist' %>
     <%= link_to "Edit", edit_song_path(song) %>
     <%= button_to "Destroy", song_path(song), method: :delete, data:{confirm: 'Are you sure?'} %>
@@ -39,6 +42,13 @@
     </li>
   <% end %>
 </ul>
+<div class= "pagination justify-content-center">
+<p><%= will_paginate(@songs,:previous_label => "&laquo", :next_label => "&raquo",:class=>"small-font",:outer_window => 1,:inner_window => 0) %></p>
+</div>
+<%# will_paginate @songs %>
+<div class= "back-button text-center">
+<%= link_to 'Back to Albums', albums_path %>
+</div>
 </div>
 
 <% if false %>
@@ -50,5 +60,3 @@
 <% end %>
 </ul>
 <% end %>
-
-<%= link_to 'Back to Albums', albums_path, class: "btn btn-secondary" %>

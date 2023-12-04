@@ -9,14 +9,14 @@ class SongsController < ApplicationController
   
 
   def index
-    songs = songs_per_page
-    if songs.present?
+    @songs = songs_per_page
+    if @songs.present?
       if current_user.user_type == 'Artist'
         followed_ids = current_user.followers.pluck(:id)
-        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
+        @songs = @songs.where(status: 'public').or(@songs.where(user_id: followed_ids))
       elsif current_user.user_type == 'Listener'
         followed_ids = current_user.followees.pluck(:id)
-        @songs = songs.where(status: 'public').or(songs.where(user_id: followed_ids))
+        @songs = @songs.where(status: 'public').or(@songs.where(user_id: followed_ids))
       end
       # render json: songs
     else
@@ -85,7 +85,7 @@ class SongsController < ApplicationController
   end
   
   def songs_per_page
-    Song.paginate(page: params[:page], per_page: 5)
+    Song.paginate(page: params[:page], per_page: 15)
   end
   
   def search 
@@ -103,23 +103,23 @@ class SongsController < ApplicationController
   end
   
   def my_top_songs
-    songs = current_user.songs.order(play_count: :desc).limit(3)
-    if songs.present?
-      render json: songs, status: 200
+    @songs = current_user.songs.order(play_count: :desc).limit(3)
+    if @songs.present?
+      render json: @songs, status: 200
     else
       render json: {error: "No songs in top played list!"}, status: :unprocessable_entity
     end
   end
   
   def top_10
-    top_songs = Song.order(play_count: :desc).limit(10)
-    render json: top_songs
+    @top_songs = Song.order(play_count: :desc).limit(10)
+    # render json: @top_songs
   end
   
   def recently_played_songs
-    recently_played_songs = current_user.recentyly_playeds
-    if recently_played_songs.present?
-      render json: recently_played_songs, status: :ok
+    @recently_played_songs = current_user.recentyly_playeds
+    if @recently_played_songs.present?
+      # render json: @recently_played_songs, status: :ok
     else
       render json: { message: "There is no recently played song" }, status: :bad_request
     end

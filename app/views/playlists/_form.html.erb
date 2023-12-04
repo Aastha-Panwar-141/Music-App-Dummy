@@ -1,0 +1,33 @@
+<%= form_with(model: @playlist) do |playlist| %>
+    <% if @playlist.errors.any? %>
+    <div id= "errors">
+    <%= pluralize(@playlist.errors.count, "error") %> prohibited
+        this article from being saved:
+    <%# <h2>Errors:</h2> %>
+    <ul>
+    <% @playlist.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+    </ul>
+    </div>
+    <% end %>
+
+    <div class="field">
+    <%= playlist.label :title %>
+    <%= playlist.text_field :title %>
+    </div>
+
+    <div class="field">
+    <%= playlist.label :song_id %>
+    <%= playlist.text_field :song_id %>
+    </div>
+
+    <div class="field">
+    <%= playlist.label :image %>
+    <%= playlist.file_field :playlist_image %>
+    </div>
+
+    <div class="actions">
+    <%= playlist.submit %>
+    </div>
+<% end %>

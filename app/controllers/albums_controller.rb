@@ -1,7 +1,7 @@
 class AlbumsController < ApplicationController
   before_action :find_album, only: [:update, :destroy, :edit, :show]
   # before_action :find_song, only: [:create]
-  before_action :validate_artist, except: [:index]
+  before_action :validate_artist, except: [:index, :show]
   before_action :authorize_album_owner, only: [:update, :destroy, :add_song]
 
   def index
@@ -13,12 +13,12 @@ class AlbumsController < ApplicationController
     if @albums.present?
       # render json: albums
     else
-      render json: {error: "There is no album present!"}
+      flash[:notice] = "There is no album present!"
+      # render json: {error: "There is no album present!"}
     end
   end
 
   def new
-    # byebug
     @album = Album.new
   end 
   
@@ -88,7 +88,8 @@ class AlbumsController < ApplicationController
     begin
       @album = Album.find(params[:id])
     rescue ActiveRecord::RecordNotFound
-      render json: {error: 'No album found for given id.'}
+      flash[:notice] = "No album found for given id."
+      # render json: {error: 'No album found for given id.'}
     end
   end
 
